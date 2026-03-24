@@ -48,7 +48,7 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!nextWalkPointSet)
+        /*if (!nextWalkPointSet)
         {
             FindNextCheckpoint();
         }
@@ -70,7 +70,7 @@ public class Enemy : MonoBehaviour
             {
                 currentCheckpoint++;
             }
-        }
+        }*/
     }
 
 

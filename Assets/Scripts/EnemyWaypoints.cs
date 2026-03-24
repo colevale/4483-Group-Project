@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -19,6 +20,7 @@ public class EnemyWaypoints : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         //Debug.Log(m_CurrentWaypointIndex.ToString());
         //enemy must have a nonzero stopping distance
         if (agent.remainingDistance < agent.stoppingDistance)
@@ -38,5 +40,15 @@ public class EnemyWaypoints : MonoBehaviour
             
         }
         
+    }
+
+    //adds all the waypoints
+    public void Setup(GameObject checkpoints)
+    {
+        for (int i = 0; i < checkpoints.transform.childCount; i++)
+        {
+            //Debug.Log(checkpoints.transform.GetChild(i).name);
+            waypoints = waypoints.Append(checkpoints.transform.GetChild(i).transform).ToArray();
+        }
     }
 }
