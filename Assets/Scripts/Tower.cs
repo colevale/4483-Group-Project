@@ -61,7 +61,8 @@ public class Tower : MonoBehaviour
     public void Upgrade()
     {
         //put any upgrades here before the level increments
-        shootTimer = shootTimer / 2;
+        shootTimer = shootTimer / 2; //shoot faster
+       
         towerValue = towerValue + cost[level];
         level++;
     }
@@ -77,12 +78,15 @@ public class Tower : MonoBehaviour
 
     public int GetUpgradeCost()
     {
-        return cost[level];
+        if (cost.Length == level)
+        {
+            return 0;
+        }
+        else return cost[level];
     }
 
     public int GetSellPrice()
     {
-
         
         return (int) Mathf.Floor(towerValue * 0.8f);
     }

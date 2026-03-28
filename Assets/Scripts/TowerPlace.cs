@@ -14,7 +14,7 @@ public class TowerPlace : MonoBehaviour
     public Camera playerCam;
     public GameObject player;
     public TMP_Text tmp_indicator; //temporary text before inventory system
-    public TMP_Text tmp_upgrade_prompt;
+    public TMP_Text upgradePrompt;
     private bool isBuilding;
     private bool canBuild;
     Vector3 buildPosition;
@@ -43,28 +43,38 @@ public class TowerPlace : MonoBehaviour
             //not pointing at building
             if (!Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out var hit, buildDistance, buildingLayer))
             {
-                if (Input.GetMouseButtonDown(0))
+                if (Input.GetButtonDown("Shoot")) //intended to be LMB
                 {
+                    upgradePrompt.gameObject.SetActive(false);
                     PlaceBldg(selectedTowers[0]);
                 }
             }
+            //everything in this else statement should be a tower by the raycast, so no error correction needed
             else
             {
                 GameObject pointedObject = hit.transform.gameObject;
-                Debug.Log(pointedObject.name);
-                if (Input.GetMouseButtonDown(0))
+                //Debug.Log(pointedObject.name);
+                //duplicates for now
+                PlayerController pc = player.GetComponent<PlayerController>();
+                Tower towerScript = pointedObject.GetComponent<Tower>();
+                int upgradeCost = towerScript.GetUpgradeCost();
+
+                upgradePrompt.text = "Upgrade for: " +  upgradeCost.ToString() + "Gold\nRemove for: " + towerScript.GetSellPrice().ToString() + "gold";
+                upgradePrompt.gameObject.SetActive(true);
+                if (Input.GetButtonDown("Shoot")) //intended to be LMB
                 {
-                    UpgradeBldg(hit);
+                    UpgradeBldg(pointedObject,towerScript, pc);
                 }
-                else if (Input.GetMouseButtonDown(1))
+                else if (Input.GetButtonDown("PlaceTower")) //intended to be RMB`
                 {
-                    RemoveBldg();
+                    RemoveBldg(pointedObject, towerScript, pc);
                 }
             }
         }
         else
         {
             tmp_indicator.gameObject.SetActive(false);
+            upgradePrompt.gameObject.SetActive(false);
         }
         
     }
@@ -83,7 +93,7 @@ public class TowerPlace : MonoBehaviour
     private void PlaceBldg(GameObject tower)
     {
         PlayerController pc = player.GetComponent<PlayerController>();
-        if (pc != null && pc.gold > 0)
+        if (pc != null && pc.gold > 200)
         {
             //prevents placement of towers not on ground
             if (!Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out var hit, buildDistance, buildLayer))
@@ -91,22 +101,38 @@ public class TowerPlace : MonoBehaviour
                 //Debug.Log(hit);
                 return;
             }
-            buildPosition = new Vector3(hit.point.x, 3, hit.point.z);
+            buildPosition = new Vector3(hit.point.x,  3, hit.point.z);
             Instantiate(tower, buildPosition, Quaternion.identity);
 
 
             pc.RemoveGold(200);
-            Debug.Log(pc.gold);
+            Debug.Log("build " + pc.gold.ToString());
         }
         
     }
-    private void RemoveBldg()
+    private void RemoveBldg(GameObject tower, Tower towerScript, PlayerController pc)
     {
-        Debug.Log("Building Remove");
+        // Debug.Log("Building Remove");
+        //PlayerController pc = player.GetComponent<PlayerController>();
+        //Tower towerScript = tower.GetComponent<Tower>();
+        pc.AddGold(towerScript.GetSellPrice());
+        Destroy(tower);
+        Debug.Log("Delete " + pc.gold.ToString());
     }
 
-    private void UpgradeBldg(RaycastHit hit)
+    private void UpgradeBldg(GameObject tower, Tower towerScript, PlayerController pc)
     {
-        Debug.Log("Building Upgrade" + hit.transform.gameObject.name.ToString());
+
+        //Debug.Log("Building Upgrade" + hit.transform.gameObject.name.ToString());
+        //PlayerController pc = player.GetComponent<PlayerController>();
+        //Tower towerScript = tower.GetComponent<Tower>();
+        int upgradeCost = towerScript.GetUpgradeCost();
+        if (towerScript != null && pc.gold > upgradeCost && towerScript.CanUpgrade())
+        {
+            towerScript.Upgrade();
+            pc.RemoveGold(upgradeCost);
+            Debug.Log("Upgrade " + pc.gold.ToString());
+        }
+
     }
 }

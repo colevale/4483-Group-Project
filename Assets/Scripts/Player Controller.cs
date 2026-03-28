@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,7 +16,7 @@ public class PlayerController : MonoBehaviour
     public float extraGravity;
 
     public int gold;
-
+    public TMP_Text goldDisplay;
 
 
     public Transform camera;
@@ -112,7 +113,7 @@ public class PlayerController : MonoBehaviour
                 
         }
 
-
+        /* //infinite towers
         bool placeTower = Input.GetButtonDown("PlaceTower");
 
         if (placeTower)
@@ -121,14 +122,17 @@ public class PlayerController : MonoBehaviour
 
             tempTower.transform.position = new Vector3(gunBarrel.position.x, 1.5f, gunBarrel.position.z);
             tempTower.transform.rotation = transform.rotation;
-        }
+        }*/
 
 
         if (Input.GetButtonDown("Exit"))
             Application.Quit();
     }
 
-
+    private void FixedUpdate()
+    {
+        updateGoldDisplay();
+    }
 
     public void SetNearCrystal(bool near)
     {
@@ -146,15 +150,22 @@ public class PlayerController : MonoBehaviour
     public void AddGold(int value)
     {
         gold = gold + value;
+        updateGoldDisplay();
     }
 
     public void RemoveGold(int value)
     {
         gold = gold - value;
+        updateGoldDisplay();
     }
 
     public int GetGold()
     {
         return gold;
+    }
+
+    private void updateGoldDisplay()
+    {
+        goldDisplay.text = gold.ToString();
     }
 }
