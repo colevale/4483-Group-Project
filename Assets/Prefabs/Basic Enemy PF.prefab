@@ -12,6 +12,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Basic Enemy PF
       objectReference: {fileID: 0}
+    - target: {fileID: 284068879376159659, guid: 7f1a98ab9b1b54240862cf9fc5a942d8, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 327841593090727717, guid: 7f1a98ab9b1b54240862cf9fc5a942d8, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1730419233980254168, guid: 7f1a98ab9b1b54240862cf9fc5a942d8, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1730419233980254168, guid: 7f1a98ab9b1b54240862cf9fc5a942d8, type: 3}
+      propertyPath: m_ExcludeLayers.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4197423452778034719, guid: 7f1a98ab9b1b54240862cf9fc5a942d8, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4606045439757122733, guid: 7f1a98ab9b1b54240862cf9fc5a942d8, type: 3}
       propertyPath: agent
       value: 
@@ -72,13 +92,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7241336287204432814, guid: 7f1a98ab9b1b54240862cf9fc5a942d8, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 8464558527976224018, guid: 7f1a98ab9b1b54240862cf9fc5a942d8, type: 3}
       propertyPath: m_Constraints
       value: 116
       objectReference: {fileID: 0}
     - target: {fileID: 8464558527976224018, guid: 7f1a98ab9b1b54240862cf9fc5a942d8, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8464558527976224018, guid: 7f1a98ab9b1b54240862cf9fc5a942d8, type: 3}
       propertyPath: m_LinearDamping
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8464558527976224018, guid: 7f1a98ab9b1b54240862cf9fc5a942d8, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8464558527976224018, guid: 7f1a98ab9b1b54240862cf9fc5a942d8, type: 3}
+      propertyPath: m_ExcludeLayers.m_Bits
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -117,7 +153,7 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 0
 --- !u!114 &2456289749898257105
 MonoBehaviour:
   m_ObjectHideFlags: 0

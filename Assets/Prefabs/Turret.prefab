@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 333249826792385847}
   - component: {fileID: 4379770790836826846}
   - component: {fileID: 3609225446364977675}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Turret Stand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 969286504778556912}
   - component: {fileID: 4152955803314261315}
   - component: {fileID: 5896401193586494986}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Turret Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -193,7 +193,7 @@ GameObject:
   - component: {fileID: 2787772928914157967}
   - component: {fileID: 4708581744825943577}
   - component: {fileID: 5496882265411634196}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Turret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -323,7 +323,7 @@ GameObject:
   - component: {fileID: 1397266606107821310}
   - component: {fileID: 5286919991317856772}
   - component: {fileID: 3822092448447466495}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Turret Stand (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -15,14 +15,18 @@ public class HPBar : MonoBehaviour
 
     public float xOffset = 2.4f;
 
-
+    public bool isUI;
 
     private void Update()
     {
         Vector3 playerPos = PlayerController.playcon.transform.position;
 
         Vector3 dir = playerPos - transform.position;
-        transform.LookAt(dir);
+        if (!isUI)
+        {
+            transform.LookAt(dir);
+        }
+        
 
     }
 

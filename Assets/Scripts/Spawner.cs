@@ -7,9 +7,10 @@ public class Spawner : MonoBehaviour
     public GameObject checkpoints;
     public int numberToSpawn;
     private int counter;
+    public GameObject player;
 
-    [SerializeField]
-    private GameObject enemyPreFab;
+    [SerializeField] private GameObject enemyPreFab;
+    //[SerializeField] private LayerMask buildlayer;
 
     [SerializeField]
     private float spawnInterval = 10f;
@@ -31,8 +32,14 @@ public class Spawner : MonoBehaviour
             yield return new WaitForSeconds(interval);
             GameObject newEnemy = Instantiate(enemy, transform.position, transform.rotation);
             newEnemy.SetActive(false);
+            
+            newEnemy.layer = 8;
             EnemyWaypoints patrolScript = newEnemy.GetComponent<EnemyWaypoints>();
+            Enemy enemyScript = newEnemy.GetComponent<Enemy>();
 
+            //sets player target
+            enemyScript.player = player;
+            enemyScript.setupPlayer();
 
             //adds checkpoints
             patrolScript.Setup(checkpoints);

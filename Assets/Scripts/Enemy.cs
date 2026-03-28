@@ -9,6 +9,9 @@ public class Enemy : MonoBehaviour
 
     public HPBar hpbar;
 
+    public GameObject player;
+    private PlayerController pc;
+
     Rigidbody rb;
 
 
@@ -43,6 +46,7 @@ public class Enemy : MonoBehaviour
     {
         hpbar.SetMaxHP(maxHP);
         rb = GetComponent<Rigidbody>();
+        
     }
 
     // Update is called once per frame
@@ -73,6 +77,10 @@ public class Enemy : MonoBehaviour
         }*/
     }
 
+    public void setupPlayer()
+    {
+        pc = player.GetComponent<PlayerController>();
+    }
 
     public void TakeDamage(int damage, Vector3 knockback)
     {
@@ -81,7 +89,13 @@ public class Enemy : MonoBehaviour
         hpbar.UpdateHP(curHP);
 
         if (curHP <= 0)
+        {
             Destroy(this.gameObject);
+            pc.AddGold(200);
+            //Debug.Log(pc.gold);
+        }
+            
+        
 
         rb.AddForce(knockback);
     }

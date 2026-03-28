@@ -14,6 +14,10 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed;
     public float extraGravity;
 
+    public int gold;
+
+
+
     public Transform camera;
     Vector3 prevMouse;
 
@@ -37,6 +41,7 @@ public class PlayerController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        gold = PlayerPrefs.GetInt("Gold"); //gold from previous campaigns
         Cursor.lockState = CursorLockMode.Locked;
         if (playcon == null)
             playcon = this;
@@ -136,5 +141,20 @@ public class PlayerController : MonoBehaviour
         crystalAct.WaveStart();
 
         print("HERES WHERE THE WAVE WOULD START");
+    }
+
+    public void AddGold(int value)
+    {
+        gold = gold + value;
+    }
+
+    public void RemoveGold(int value)
+    {
+        gold = gold - value;
+    }
+
+    public int GetGold()
+    {
+        return gold;
     }
 }
