@@ -59,13 +59,13 @@ public class TowerPlace : MonoBehaviour
                 Tower towerScript = pointedObject.GetComponent<Tower>();
                 int upgradeCost = towerScript.GetUpgradeCost();
 
-                upgradePrompt.text = "Upgrade for: " +  upgradeCost.ToString() + "Gold\nRemove for: " + towerScript.GetSellPrice().ToString() + "gold";
+                upgradePrompt.text = "= Upgrade for: " +  upgradeCost.ToString() + "Gold\n- Remove for: " + towerScript.GetSellPrice().ToString() + "gold";
                 upgradePrompt.gameObject.SetActive(true);
-                if (Input.GetButtonDown("Shoot")) //intended to be LMB
+                if (Input.GetKeyDown(KeyCode.Equals)) 
                 {
                     UpgradeBldg(pointedObject,towerScript, pc);
                 }
-                else if (Input.GetButtonDown("PlaceTower")) //intended to be RMB`
+                else if (Input.GetKeyDown(KeyCode.Minus)) 
                 {
                     RemoveBldg(pointedObject, towerScript, pc);
                 }

@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
 
     public int gold;
     public TMP_Text goldDisplay;
+    public GameObject wave;
 
 
     public Transform camera;
@@ -145,6 +146,9 @@ public class PlayerController : MonoBehaviour
         crystalAct.WaveStart();
 
         print("HERES WHERE THE WAVE WOULD START");
+        WaveManager manager = wave.GetComponent<WaveManager>() ;
+        manager.StartWave();
+        Debug.Log("Wave has started");
     }
 
     public void AddGold(int value)
