@@ -21731,7 +21731,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 608b8a628a3d83845a0e07f0de64375f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeInOneDay: 30
+  timeInOneDay: 600
   pause: 0
 --- !u!114 &2122948304
 MonoBehaviour:
