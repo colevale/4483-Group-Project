@@ -20,6 +20,8 @@ public class Trap : MonoBehaviour
 
     private void Update()
     {
+        //clean up destroyed GameObjects
+        enemiesStuck.RemoveAll(item => item == null);
         if (enemyStuck)
         {
             timer -= Time.deltaTime;

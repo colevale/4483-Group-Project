@@ -96,7 +96,7 @@ public class TowerPlace : MonoBehaviour
     private void PlaceBldg(GameObject tower)
     {
         PlayerController pc = player.GetComponent<PlayerController>();
-        if (pc != null && pc.gold > 200)
+        if (pc != null && pc.gold > 0)
         {
             //prevents placement of towers not on ground
             if (!Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out var hit, buildDistance, buildLayer))

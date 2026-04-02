@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        gold = PlayerPrefs.GetInt("Gold"); //gold from previous campaigns
+        gold = PlayerPrefs.GetInt("gold"); //gold from previous campaigns
         Cursor.lockState = CursorLockMode.Locked;
         if (playcon == null)
             playcon = this;
@@ -198,5 +198,10 @@ public class PlayerController : MonoBehaviour
     private void updateGoldDisplay()
     {
         goldDisplay.text = gold.ToString();
+    }
+
+    public void SaveGold()
+    {
+        PlayerPrefs.SetInt("gold", gold);
     }
 }

@@ -30,6 +30,9 @@ public class LevelRunScript : MonoBehaviour
     // c_lvl is current level selected, stored in player preferences to avoid global variable messiness in script e.g. static vars in script
     void Start()
     {
+        //after winning unlock cursor
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         currentLevel = PlayerPrefs.GetInt("c_lvl"); 
         int progress = PlayerPrefs.GetInt("progress"); 
         title.text = "Level " + currentLevel.ToString();

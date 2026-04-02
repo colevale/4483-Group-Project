@@ -4593,9 +4593,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WaveManager
   primarySpawners: []
   waves: 
+  player: {fileID: 2145298515}
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   spawn: {fileID: 544800932}
 --- !u!4 &330900546
 Transform:
@@ -7941,6 +7942,7 @@ MonoBehaviour:
   checkpoints: {fileID: 558263033}
   numberToSpawn: 10
   player: {fileID: 2145298515}
+  doneSpawning: 0
   enemyPreFab: {fileID: 8645528365580513968, guid: 261b161b8e3d65142b1c78c5b13bc45e, type: 3}
   spawnInterval: 1
 --- !u!1001 &545782803

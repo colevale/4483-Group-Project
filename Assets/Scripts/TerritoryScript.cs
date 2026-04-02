@@ -18,6 +18,7 @@ public class TerritoryScript : MonoBehaviour
         {
             //initializes it to 1 if it is a new game
             PlayerPrefs.SetInt("progress", 1);
+            PlayerPrefs.SetInt("gold", 400);
             //default value matches initialization of 1
             currentProgression = 1;
         }
