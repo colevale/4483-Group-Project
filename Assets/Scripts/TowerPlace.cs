@@ -34,15 +34,17 @@ public class TowerPlace : MonoBehaviour
             isBuilding = !isBuilding;
             //Debug.Log(isBuilding);
         }
+
         if (isBuilding)
         {
             tmp_indicator.gameObject.SetActive(true);
             //drawGhost();
             //temporary [0]
-            
+
             //not pointing at building
             if (!Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out var hit, buildDistance, buildingLayer))
             {
+                Debug.DrawLine(transform.position, hit.point, Color.green);
                 if (Input.GetButtonDown("Shoot")) //intended to be LMB
                 {
                     upgradePrompt.gameObject.SetActive(false);
@@ -52,6 +54,7 @@ public class TowerPlace : MonoBehaviour
             //everything in this else statement should be a tower by the raycast, so no error correction needed
             else
             {
+                Debug.DrawLine(transform.position, hit.point, Color.green);
                 GameObject pointedObject = hit.transform.gameObject;
                 //Debug.Log(pointedObject.name);
                 //duplicates for now

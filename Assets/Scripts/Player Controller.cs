@@ -15,6 +15,10 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed;
     public float extraGravity;
 
+    //  upgrades
+    public float timeBetweenShots;
+    public bool readyToShoot;
+
     public int gold;
     public TMP_Text goldDisplay;
     public GameObject wave;
@@ -39,6 +43,12 @@ public class PlayerController : MonoBehaviour
 
     bool nearCrystal;
     public CrystalActivation crystalAct;
+
+    private void Awake()
+    {
+        readyToShoot = true;
+        timeBetweenShots = (float) 0.75;
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -106,10 +116,17 @@ public class PlayerController : MonoBehaviour
                 WaveStart();
             else
             {
-                Projectile tempBullet = Instantiate<GameObject>(bulletPrefab).GetComponent<Projectile>();
+                if (readyToShoot)
+                {
+                    readyToShoot = false;
 
-                tempBullet.transform.position = gunBarrel.position;
-                tempBullet.Shoot(camera.rotation);
+                    Projectile tempBullet = Instantiate<GameObject>(bulletPrefab).GetComponent<Projectile>();
+
+                    tempBullet.transform.position = gunBarrel.position;
+                    tempBullet.Shoot(camera.rotation);
+
+                    Invoke("ResetShot", timeBetweenShots);
+                }
             }
                 
         }
@@ -149,6 +166,16 @@ public class PlayerController : MonoBehaviour
         WaveManager manager = wave.GetComponent<WaveManager>() ;
         manager.StartWave();
         Debug.Log("Wave has started");
+    }
+
+    public void ResetShot()
+    {
+        readyToShoot = true;
+    }
+
+    public void UpgradeShotTime(float upgradeBy)
+    {
+        timeBetweenShots -= upgradeBy;
     }
 
     public void AddGold(int value)
