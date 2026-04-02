@@ -8,6 +8,16 @@ public class Projectile : MonoBehaviour
     public float knockback = 50;
     float timer;
 
+    private UpgradeManager projSettings;
+
+    private void Awake()
+    {
+        projSettings = GameObject.Find("PlayerCanvas").GetComponent<UpgradeManager>();
+        speed = projSettings.getCurrProjSpeed();
+        damage = projSettings.getCurrDamage();
+        knockback = projSettings.getCurrKnockback();
+    }
+
     private void Start()
     {
         timer = duration;
