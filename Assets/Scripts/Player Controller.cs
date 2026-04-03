@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed;
     public float extraGravity;
 
+    public Gun gun;
+
     //  upgrades
     public float timeBetweenShots;
     public bool readyToShoot;
@@ -33,9 +35,7 @@ public class PlayerController : MonoBehaviour
 
 
     public GameObject towerPrefab;
-    public GameObject bulletPrefab;
-
-    public Transform gunBarrel;
+    
 
 
     public ColliderList groundedCheck;
@@ -108,28 +108,22 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(-transform.up * Time.deltaTime * extraGravity);
         }
 
-        bool shoot = Input.GetButtonDown("Shoot");
 
+
+
+        //Gun stuff
+        bool shoot = Input.GetButtonDown("Shoot");
         if (shoot)
         {
             if (nearCrystal)
                 WaveStart();
             else
             {
-                if (readyToShoot)
-                {
-                    readyToShoot = false;
-
-                    Projectile tempBullet = Instantiate<GameObject>(bulletPrefab).GetComponent<Projectile>();
-
-                    tempBullet.transform.position = gunBarrel.position;
-                    tempBullet.Shoot(camera.rotation);
-
-                    Invoke("ResetShot", timeBetweenShots);
-                }
+                gun.Shoot(camera.rotation);
             }
                 
         }
+        gun.UpdateSpeed(rb.linearVelocity.magnitude);
 
         /* //infinite towers
         bool placeTower = Input.GetButtonDown("PlaceTower");
