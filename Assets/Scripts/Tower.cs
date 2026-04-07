@@ -1,4 +1,3 @@
-using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
 
 public class Tower : MonoBehaviour
@@ -7,9 +6,9 @@ public class Tower : MonoBehaviour
 
     public float shootTimer = 5;
     public int level = 0;
-    float towerValue = 200;
-    int[] cost = {75, 150, 300};
-    float timer;
+    protected float towerValue = 200;
+    protected int[] cost = {75, 150, 300};
+    protected float timer;
 
     public Transform gunBarrel;
     public Transform wholeTurret;
@@ -58,7 +57,7 @@ public class Tower : MonoBehaviour
         }
     }
 
-    public void Upgrade()
+    public virtual void Upgrade()
     {
         //put any upgrades here before the level increments
         shootTimer = shootTimer / 2; //shoot faster
@@ -67,7 +66,12 @@ public class Tower : MonoBehaviour
         level++;
     }
 
-    public bool CanUpgrade()
+    public float GetValue()
+    {
+        return towerValue;
+    }
+
+    public virtual bool CanUpgrade()
     {
         if (level < cost.Length)
         {
