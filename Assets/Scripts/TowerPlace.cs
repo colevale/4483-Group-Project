@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -19,10 +20,15 @@ public class TowerPlace : MonoBehaviour
     private bool canBuild;
     Vector3 buildPosition;
 
+    private int selected_tower;
+    private int newTower;
+    public List<Image> arrows = new List<Image>();
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         isBuilding = false;
+        selected_tower = 0;
     }
 
     // Update is called once per frame
@@ -41,6 +47,8 @@ public class TowerPlace : MonoBehaviour
             //drawGhost();
             //temporary [0]
 
+            TowerSelection();
+
             //not pointing at building
             if (!Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out var hit, buildDistance, buildingLayer))
             {
@@ -48,7 +56,7 @@ public class TowerPlace : MonoBehaviour
                 if (Input.GetButtonDown("Shoot")) //intended to be LMB
                 {
                     upgradePrompt.gameObject.SetActive(false);
-                    PlaceBldg(selectedTowers[0]);
+                    PlaceBldg(selectedTowers[selected_tower]);
                 }
             }
             //everything in this else statement should be a tower by the raycast, so no error correction needed
@@ -62,13 +70,13 @@ public class TowerPlace : MonoBehaviour
                 Tower towerScript = pointedObject.GetComponent<Tower>();
                 int upgradeCost = towerScript.GetUpgradeCost();
 
-                upgradePrompt.text = "= Upgrade for: " +  upgradeCost.ToString() + "Gold\n- Remove for: " + towerScript.GetSellPrice().ToString() + "gold";
+                upgradePrompt.text = "= Upgrade for: " + upgradeCost.ToString() + "Gold\n- Remove for: " + towerScript.GetSellPrice().ToString() + "gold";
                 upgradePrompt.gameObject.SetActive(true);
-                if (Input.GetKeyDown(KeyCode.Equals)) 
+                if (Input.GetKeyDown(KeyCode.Equals))
                 {
-                    UpgradeBldg(pointedObject,towerScript, pc);
+                    UpgradeBldg(pointedObject, towerScript, pc);
                 }
-                else if (Input.GetKeyDown(KeyCode.Minus)) 
+                else if (Input.GetKeyDown(KeyCode.Minus))
                 {
                     RemoveBldg(pointedObject, towerScript, pc);
                 }
@@ -79,10 +87,10 @@ public class TowerPlace : MonoBehaviour
             tmp_indicator.gameObject.SetActive(false);
             upgradePrompt.gameObject.SetActive(false);
         }
-        
+
     }
 
-    
+
 
     //build ghost
     private void drawGhost()
@@ -96,7 +104,7 @@ public class TowerPlace : MonoBehaviour
     private void PlaceBldg(GameObject tower)
     {
         PlayerController pc = player.GetComponent<PlayerController>();
-        if (pc != null && pc.gold > 0)
+        if (pc != null && pc.gold > 200)
         {
             //prevents placement of towers not on ground
             if (!Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out var hit, buildDistance, buildLayer))
@@ -104,14 +112,14 @@ public class TowerPlace : MonoBehaviour
                 //Debug.Log(hit);
                 return;
             }
-            buildPosition = new Vector3(hit.point.x,  3, hit.point.z);
+            buildPosition = new Vector3(hit.point.x, 3, hit.point.z);
             Instantiate(tower, buildPosition, Quaternion.identity);
 
 
-            pc.RemoveGold(200);
+            pc.RemoveGold((int)tower.GetComponent<Tower>().GetValue());
             Debug.Log("build " + pc.gold.ToString());
         }
-        
+
     }
     private void RemoveBldg(GameObject tower, Tower towerScript, PlayerController pc)
     {
@@ -137,5 +145,46 @@ public class TowerPlace : MonoBehaviour
             Debug.Log("Upgrade " + pc.gold.ToString());
         }
 
+    }
+
+    private void TowerSelection()
+    {
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            newTower = 0;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            newTower = 1;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            newTower = 2;
+        }
+
+        if (Input.GetAxis("Mouse ScrollWheel") > 0f)
+        {
+            newTower = (selected_tower + 1) % 3;
+        }
+        else if (Input.GetAxis("Mouse ScrollWheel") < 0f)
+        {
+            newTower = selected_tower - 1;
+            if (newTower == -1)
+            {
+                newTower = 2;
+            }
+
+        }
+
+        if (newTower != selected_tower)
+        {
+            arrows[selected_tower].color = new Color(1f, 1f, 1f, 0f);
+            arrows[newTower].color = new Color(1f, 1f, 1f, 1f);
+            selected_tower = newTower;
+            tmp_indicator.SetText("Building Mode " + selectedTowers[selected_tower].GetComponent<Tower>().GetValue().ToString() + "G for Tower");
+        }
     }
 }

@@ -2,12 +2,11 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Collections.Generic;
 
-public class Trap : MonoBehaviour
+public class Trap : Tower
 {
-    private float towerValue = 50;
+    new float towerValue = 50;
     public float timeStuck;
 
-    private float timer;
     private bool enemyStuck;
     public List<Collider> enemiesStuck = new List<Collider>();
 
@@ -20,8 +19,6 @@ public class Trap : MonoBehaviour
 
     private void Update()
     {
-        //clean up destroyed GameObjects
-        enemiesStuck.RemoveAll(item => item == null);
         if (enemyStuck)
         {
             timer -= Time.deltaTime;
@@ -52,5 +49,10 @@ public class Trap : MonoBehaviour
                 enemyStuck = true;
             }
         }
+    }
+
+    public override bool CanUpgrade()
+    {
+        return false;
     }
 }
