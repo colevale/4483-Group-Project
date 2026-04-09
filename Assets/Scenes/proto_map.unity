@@ -5031,6 +5031,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5438773446260647418, guid: d39142d2522364f499b59ae37164369e, type: 3}
+      propertyPath: m_TagString
+      value: Tower
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -20172,6 +20176,7 @@ MonoBehaviour:
   timeBetweenShots: 1
   bulletOffset: {fileID: 804394897}
   bulletPrefab: {fileID: 3527704262865744493, guid: dee105233bd50fc44bd345a2484d1665, type: 3}
+  canShoot: 1
 --- !u!1001 &1053593549
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27429,7 +27434,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Building Mode 200G for tower
+  m_text: Building Mode 200G for Tower
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -30439,6 +30444,11 @@ MonoBehaviour:
   - {fileID: 1012206854}
   - {fileID: 2117059625}
   - {fileID: 1720785028}
+  ghostMaterialValid: {fileID: 2100000, guid: 7d5fc0b7c0a50db4aa574c832186625e, type: 2}
+  ghostMaterialInvalid: {fileID: 2100000, guid: 5ddf0536e92aba74badefe77ccdc007e, type: 2}
+  connectorOverlapRadius: 1
+  maxGroundAngle: 30
+  playerGun: {fileID: 1050697946}
 --- !u!1 &1954425992
 GameObject:
   m_ObjectHideFlags: 0
@@ -33513,7 +33523,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6694910518271417838, guid: 1f97762d9953ed949b01ded086cfe6ee, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3
+      value: 2.8
       objectReference: {fileID: 0}
     - target: {fileID: 6694910518271417838, guid: 1f97762d9953ed949b01ded086cfe6ee, type: 3}
       propertyPath: m_LocalPosition.z

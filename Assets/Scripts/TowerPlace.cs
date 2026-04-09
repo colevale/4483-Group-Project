@@ -24,6 +24,21 @@ public class TowerPlace : MonoBehaviour
     private int newTower;
     public List<Image> arrows = new List<Image>();
 
+    private GameObject ghostTowerGameObject;
+    [SerializeField] private Material ghostMaterialValid;
+    [SerializeField] private Material ghostMaterialInvalid;
+    [SerializeField] private float connectorOverlapRadius = 1;
+    [SerializeField] private float maxGroundAngle = 30f;
+    private bool isGhostInValidPosition = false;
+
+    public GameObject playerGun;
+    private Gun gunScript;
+
+    private void Awake()
+    {
+        gunScript = playerGun.GetComponent<Gun>();
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -38,97 +53,136 @@ public class TowerPlace : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.B))
         {
             isBuilding = !isBuilding;
-            //Debug.Log(isBuilding);
         }
 
         if (isBuilding)
         {
+            gunScript.SetShot(false);
+            playerGun.SetActive(false);
             tmp_indicator.gameObject.SetActive(true);
-            //drawGhost();
-            //temporary [0]
 
-            TowerSelection();
+            drawGhost();
 
-            //not pointing at building
-            if (!Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out var hit, buildDistance, buildingLayer))
+            if (Input.GetButtonDown("Shoot"))
             {
-                Debug.DrawLine(transform.position, hit.point, Color.green);
-                if (Input.GetButtonDown("Shoot")) //intended to be LMB
-                {
-                    upgradePrompt.gameObject.SetActive(false);
-                    PlaceBldg(selectedTowers[selected_tower]);
-                }
+                placeTower();
             }
-            //everything in this else statement should be a tower by the raycast, so no error correction needed
+        }
+        else if (ghostTowerGameObject)
+        {
+            Destroy(ghostTowerGameObject);
+            ghostTowerGameObject = null;
+            gunScript.SetShot(true);
+            playerGun.SetActive(true);
+            tmp_indicator.gameObject.SetActive(false);
+            upgradePrompt.gameObject.SetActive(false);
+
+        }
+    }
+
+
+    //build ghost tower obj
+    private void drawGhost()
+    {
+        TowerSelection();
+
+        GameObject currentTower = selectedTowers[selected_tower];
+        createGhostPrefab(currentTower);
+
+        moveGhostPrefabToRaycast();
+        checkTowerValdity();
+
+    }
+
+    private void createGhostPrefab(GameObject tower)
+    {
+        if (ghostTowerGameObject == null)
+        {
+            ghostTowerGameObject = Instantiate(tower);
+
+            ghostifyTower(ghostTowerGameObject.transform);
+        }
+    }
+
+    private void moveGhostPrefabToRaycast()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+            ghostTowerGameObject.transform.position = new Vector3(hit.point.x, hit.point.y + 2.8f, hit.point.z);
+        }
+    }
+
+    private void checkTowerValdity()
+    {
+        Collider[] colliders = Physics.OverlapSphere(ghostTowerGameObject.transform.position, connectorOverlapRadius, buildLayer);
+        if (colliders.Length > 0)
+        {
+            // place upgrade thingamajig stuff here
+        }
+        else
+        {
+            ghostNewTower();
+        }
+    }
+
+    private void ghostNewTower()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+            if (hit.collider.transform.root.CompareTag("Tower"))
+            {
+                ghostifyTower(ghostTowerGameObject.transform, ghostMaterialInvalid);
+                isGhostInValidPosition = false;
+                return;
+            }
+
+            if (Vector3.Angle(hit.normal, Vector3.up) < maxGroundAngle)
+            {
+                ghostifyTower(ghostTowerGameObject.transform, ghostMaterialValid);
+                isGhostInValidPosition = true;
+            }
             else
             {
-                Debug.DrawLine(transform.position, hit.point, Color.green);
-                GameObject pointedObject = hit.transform.gameObject;
-                //Debug.Log(pointedObject.name);
-                //duplicates for now
-                PlayerController pc = player.GetComponent<PlayerController>();
-                Tower towerScript = pointedObject.GetComponent<Tower>();
-                int upgradeCost = towerScript.GetUpgradeCost();
+                ghostifyTower(ghostTowerGameObject.transform, ghostMaterialInvalid);
+                isGhostInValidPosition = false;
+            }
+        }
+    }
 
-                upgradePrompt.text = "= Upgrade for: " + upgradeCost.ToString() + "Gold\n- Remove for: " + towerScript.GetSellPrice().ToString() + "gold";
-                upgradePrompt.gameObject.SetActive(true);
-                if (Input.GetKeyDown(KeyCode.Equals))
-                {
-                    UpgradeBldg(pointedObject, towerScript, pc);
-                }
-                else if (Input.GetKeyDown(KeyCode.Minus))
-                {
-                    RemoveBldg(pointedObject, towerScript, pc);
-                }
+    private void ghostifyTower(Transform tower, Material ghostMaterial = null)
+    {
+        if (ghostMaterial != null)
+        {
+            foreach(MeshRenderer meshRend in tower.GetComponentsInChildren<MeshRenderer>())
+            {
+                meshRend.material = ghostMaterial;
             }
         }
         else
         {
-            tmp_indicator.gameObject.SetActive(false);
-            upgradePrompt.gameObject.SetActive(false);
-        }
-
-    }
-
-
-
-    //build ghost
-    private void drawGhost()
-    {
-        if (!Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out var hit, buildDistance, buildLayer))
-        {
-
+            foreach (Collider collider in tower.GetComponentsInChildren<Collider>())
+            {
+                collider.enabled = false;
+            }
         }
     }
 
-    private void PlaceBldg(GameObject tower)
+    private void placeTower()
     {
         PlayerController pc = player.GetComponent<PlayerController>();
-        if (pc != null && pc.gold > 200)
+        if (pc != null && pc.gold > 50)
         {
-            //prevents placement of towers not on ground
-            if (!Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out var hit, buildDistance, buildLayer))
+            if (ghostTowerGameObject != null & isGhostInValidPosition)
             {
-                //Debug.Log(hit);
-                return;
-            }
-            buildPosition = new Vector3(hit.point.x, 3, hit.point.z);
-            Instantiate(tower, buildPosition, Quaternion.identity);
+                GameObject tower = Instantiate(selectedTowers[selected_tower], ghostTowerGameObject.transform.position, ghostTowerGameObject.transform.rotation);
 
-
-            pc.RemoveGold((int)tower.GetComponent<Tower>().GetValue());
-            Debug.Log("build " + pc.gold.ToString());
+                pc.RemoveGold((int)tower.GetComponent<Tower>().GetValue());
+            } 
         }
-
-    }
-    private void RemoveBldg(GameObject tower, Tower towerScript, PlayerController pc)
-    {
-        // Debug.Log("Building Remove");
-        //PlayerController pc = player.GetComponent<PlayerController>();
-        //Tower towerScript = tower.GetComponent<Tower>();
-        pc.AddGold(towerScript.GetSellPrice());
-        Destroy(tower);
-        Debug.Log("Delete " + pc.gold.ToString());
     }
 
     private void UpgradeBldg(GameObject tower, Tower towerScript, PlayerController pc)
@@ -181,6 +235,8 @@ public class TowerPlace : MonoBehaviour
 
         if (newTower != selected_tower)
         {
+            Destroy(ghostTowerGameObject);
+            ghostTowerGameObject = null;
             arrows[selected_tower].color = new Color(1f, 1f, 1f, 0f);
             arrows[newTower].color = new Color(1f, 1f, 1f, 1f);
             selected_tower = newTower;

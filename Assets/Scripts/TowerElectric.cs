@@ -3,7 +3,7 @@ using UnityEngine;
 public class TowerElectric : Tower
 {
     public new float shootTimer = 7;
-    new float towerValue = 500;
+    public new float towerValue = 500;
     new int[] cost = { 200, 400, 600 };
 
     private float radius;

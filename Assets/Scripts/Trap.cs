@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class Trap : Tower
 {
-    new float towerValue = 50;
+    public new float towerValue = 50;
     public float timeStuck;
 
     private bool enemyStuck;
