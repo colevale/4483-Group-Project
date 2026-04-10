@@ -79,8 +79,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 3527704262865744493, guid: dee105233bd50fc44bd345a2484d1665, type: 3}
-  shootTimer: 5
   level: 0
+  whatIsEnemy:
+    serializedVersion: 2
+    m_Bits: 256
+  sightRange: 10
+  enemyInSightRange: 0
   gunBarrel: {fileID: 969286504778556912}
   wholeTurret: {fileID: 991785812288427313}
 --- !u!135 &5496882265411634196
@@ -102,8 +106,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.97262067
+  m_Center: {x: 0, y: -1.2876797, z: 0}
 --- !u!1001 &1678880506450236659
 PrefabInstance:
   m_ObjectHideFlags: 0

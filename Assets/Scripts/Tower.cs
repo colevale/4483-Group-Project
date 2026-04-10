@@ -11,6 +11,11 @@ public class Tower : MonoBehaviour
     protected int[] cost = { 75, 150, 300 };
     protected float timer;
 
+    public LayerMask whatIsEnemy;
+    public float sightRange;
+    public bool enemyInSightRange;
+    private Transform targetedEnemy = null;
+
     public Transform gunBarrel;
     public Transform wholeTurret;
 
@@ -23,7 +28,19 @@ public class Tower : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        enemyInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsEnemy);
+
         timer -= Time.deltaTime;
+
+        if (enemyInSightRange)
+        {
+            TargetEnemy();
+        }
+    }
+
+    private void TargetEnemy()
+    {
+        GetEnemy();
 
         if (timer <= 0)
         {
@@ -36,23 +53,26 @@ public class Tower : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void GetEnemy()
     {
+        Collider[] enemies = Physics.OverlapSphere(transform.position, sightRange, whatIsEnemy);
 
-        TargetEnemy(other);
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        TargetEnemy(other);
-    }
-
-    private void TargetEnemy(Collider other)
-    {
-        if (other.gameObject.tag == "Enemy")
+        if (targetedEnemy == null)
         {
-            wholeTurret.LookAt(other.transform);
+            targetedEnemy = enemies[enemies.Length-1].transform;
         }
+
+        wholeTurret.LookAt(targetedEnemy);
+
+        foreach (Collider target in enemies)
+        {
+            if (target.transform == targetedEnemy)
+            {
+                return;
+            }
+        }
+
+        targetedEnemy = null;
     }
 
     public virtual void Upgrade()
