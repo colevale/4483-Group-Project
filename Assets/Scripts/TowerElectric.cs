@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class TowerElectric : Tower
 {
-    public new float shootTimer = 7;
-    public new float towerValue = 500;
+    private float electricShootTimer = 7;
+    private float electricTowerValue = 500;
     new int[] cost = { 200, 400, 600 };
 
     private float radius;
@@ -12,7 +12,7 @@ public class TowerElectric : Tower
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        timer = shootTimer;
+        timer = electricShootTimer;
         radius = 15;
         damage = 2;
     }
@@ -24,7 +24,7 @@ public class TowerElectric : Tower
 
         if (timer <= 0)
         {
-            timer = shootTimer;
+            timer = electricShootTimer;
 
             Collider[] whatWasHit = Physics.OverlapSphere(gameObject.transform.position, radius);
 
@@ -49,12 +49,17 @@ public class TowerElectric : Tower
         return false;
     }
 
+    public override float GetValue()
+    {
+        return electricTowerValue;
+    }
+
     public override void Upgrade()
     {
         radius += 5; //hits at longer distance
         damage += 1; //deals more damage
 
-        towerValue = towerValue + cost[level];
+        electricTowerValue = electricTowerValue + cost[level];
         level++;
     }
 }

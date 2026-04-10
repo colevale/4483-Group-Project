@@ -5,17 +5,14 @@ public class Tower : MonoBehaviour
 {
     public GameObject bulletPrefab;
 
-    public float shootTimer = 5;
+    private float shootTimer = 5;
     public int level = 0;
-    protected float towerValue = 200;
+    private float towerValue = 200;
     protected int[] cost = { 75, 150, 300 };
     protected float timer;
 
     public Transform gunBarrel;
     public Transform wholeTurret;
-
-
-
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -67,7 +64,7 @@ public class Tower : MonoBehaviour
         level++;
     }
 
-    public float GetValue()
+    public virtual float GetValue()
     {
         return towerValue;
     }

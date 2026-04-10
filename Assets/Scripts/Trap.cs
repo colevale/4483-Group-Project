@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class Trap : Tower
 {
-    public new float towerValue = 50;
+    private float trapTowerValue = 50;
     public float timeStuck;
 
     private bool enemyStuck;
@@ -49,6 +49,11 @@ public class Trap : Tower
                 enemyStuck = true;
             }
         }
+    }
+
+    public override float GetValue()
+    {
+        return trapTowerValue;
     }
 
     public override bool CanUpgrade()

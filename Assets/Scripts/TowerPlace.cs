@@ -119,6 +119,9 @@ public class TowerPlace : MonoBehaviour
         Collider[] colliders = Physics.OverlapSphere(ghostTowerGameObject.transform.position, connectorOverlapRadius, buildLayer);
         if (colliders.Length > 0)
         {
+            Destroy(ghostTowerGameObject);
+            ghostTowerGameObject = null;
+
             // place upgrade thingamajig stuff here
         }
         else
@@ -129,6 +132,9 @@ public class TowerPlace : MonoBehaviour
 
     private void ghostNewTower()
     {
+        PlayerController pc = player.GetComponent<PlayerController>();
+        Tower currTower = selectedTowers[selected_tower].GetComponent<Tower>();
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
@@ -140,7 +146,7 @@ public class TowerPlace : MonoBehaviour
                 return;
             }
 
-            if (Vector3.Angle(hit.normal, Vector3.up) < maxGroundAngle)
+            if (Vector3.Angle(hit.normal, Vector3.up) < maxGroundAngle && currTower.GetValue() <= pc.GetGold())
             {
                 ghostifyTower(ghostTowerGameObject.transform, ghostMaterialValid);
                 isGhostInValidPosition = true;
@@ -174,7 +180,8 @@ public class TowerPlace : MonoBehaviour
     private void placeTower()
     {
         PlayerController pc = player.GetComponent<PlayerController>();
-        if (pc != null && pc.gold > 50)
+        Tower currTower = selectedTowers[selected_tower].GetComponent<Tower>();
+        if (pc != null && currTower.GetValue() <= pc.GetGold())
         {
             if (ghostTowerGameObject != null & isGhostInValidPosition)
             {
