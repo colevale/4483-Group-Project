@@ -77,7 +77,6 @@ public class TowerPlace : MonoBehaviour
             playerGun.SetActive(true);
             tmp_indicator.gameObject.SetActive(false);
             upgradePrompt.gameObject.SetActive(false);
-
         }
     }
 
