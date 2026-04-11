@@ -30,6 +30,8 @@ public class PlayerController : MonoBehaviour
 
     Rigidbody rb;
 
+    public bool upgrading;
+
     public Gun gun;
 
     //  upgrades
@@ -71,6 +73,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         readyToJump = true;
+        upgrading = false;
     }
 
     // Update is called once per frame
@@ -94,33 +97,36 @@ public class PlayerController : MonoBehaviour
         }
         */
 
-        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
-
-        MyInput();
-        SpeedControl();
-
-        if (grounded)
+        if (!upgrading)
         {
-            rb.linearDamping = groundDrag;
-        }
-        else
-        {
-            rb.linearDamping = 0;
-        }    
+            grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
 
-        //Gun stuff
-        bool shoot = Input.GetButtonDown("Shoot");
-        if (shoot)
-        {
-            if (nearCrystal)
-                WaveStart();
+            MyInput();
+            SpeedControl();
+
+            if (grounded)
+            {
+                rb.linearDamping = groundDrag;
+            }
             else
             {
-                gun.Shoot(camera.rotation);
+                rb.linearDamping = 0;
             }
-                
+
+            //Gun stuff
+            bool shoot = Input.GetButtonDown("Shoot");
+            if (shoot)
+            {
+                if (nearCrystal)
+                    WaveStart();
+                else
+                {
+                    gun.Shoot(camera.rotation);
+                }
+
+            }
+            gun.UpdateSpeed(rb.linearVelocity.magnitude);
         }
-        gun.UpdateSpeed(rb.linearVelocity.magnitude);
 
         /* //infinite towers
         bool placeTower = Input.GetButtonDown("PlaceTower");
@@ -201,6 +207,10 @@ public class PlayerController : MonoBehaviour
         nearCrystal = near;
     }
 
+    public void SwitchUpgrading()
+    {
+        upgrading = !upgrading;
+    }
 
     public void WaveStart()
     {
