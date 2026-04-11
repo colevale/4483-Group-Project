@@ -60,6 +60,7 @@ public class TowerPlace : MonoBehaviour
             gunScript.SetShot(false);
             playerGun.SetActive(false);
             tmp_indicator.gameObject.SetActive(true);
+            upgradePrompt.gameObject.SetActive(false);
 
             drawGhost();
 
@@ -121,8 +122,6 @@ public class TowerPlace : MonoBehaviour
         {
             Destroy(ghostTowerGameObject);
             ghostTowerGameObject = null;
-
-            // place upgrade thingamajig stuff here
         }
         else
         {
@@ -141,11 +140,14 @@ public class TowerPlace : MonoBehaviour
         {
             if (hit.collider.transform.root.CompareTag("Tower"))
             {
-                ghostifyTower(ghostTowerGameObject.transform, ghostMaterialInvalid);
+                Destroy(ghostTowerGameObject);
+                ghostTowerGameObject = null;
                 isGhostInValidPosition = false;
+                UpgradeFunction(hit.collider.transform.gameObject, pc);
                 return;
             }
-
+            
+            
             if (Vector3.Angle(hit.normal, Vector3.up) < maxGroundAngle && currTower.GetValue() <= pc.GetGold())
             {
                 ghostifyTower(ghostTowerGameObject.transform, ghostMaterialValid);
@@ -192,20 +194,44 @@ public class TowerPlace : MonoBehaviour
         }
     }
 
-    private void UpgradeBldg(GameObject tower, Tower towerScript, PlayerController pc)
+    private void UpgradeFunction(GameObject tower, PlayerController pc)
     {
-
-        //Debug.Log("Building Upgrade" + hit.transform.gameObject.name.ToString());
-        //PlayerController pc = player.GetComponent<PlayerController>();
-        //Tower towerScript = tower.GetComponent<Tower>();
+        Tower towerScript = tower.GetComponent<Tower>();
         int upgradeCost = towerScript.GetUpgradeCost();
-        if (towerScript != null && pc.gold > upgradeCost && towerScript.CanUpgrade())
-        {
-            towerScript.Upgrade();
-            pc.RemoveGold(upgradeCost);
-            Debug.Log("Upgrade " + pc.gold.ToString());
-        }
+        int sellCost = towerScript.GetSellPrice();
 
+        tmp_indicator.gameObject.SetActive(false);
+
+        if (towerScript.CanUpgrade())
+        {
+            upgradePrompt.SetText("Left Click To Upgrade (Upgrade Cost = " + upgradeCost.ToString() + "G)\nRight Click To Sell (Sell Cost = " + sellCost.ToString() + "G)");
+            upgradePrompt.gameObject.SetActive(true);
+
+            if (Input.GetButtonDown("Shoot"))
+            {
+                if (towerScript != null && pc.gold >= upgradeCost)
+                {
+                    towerScript.Upgrade();
+                    pc.RemoveGold(upgradeCost);
+                }
+            }
+        }
+        else
+        {
+            upgradePrompt.SetText("Upgrade MAX\nRight Click To Sell (Sell Cost = " + sellCost.ToString() + "G)");
+            upgradePrompt.gameObject.SetActive(true);
+        }
+        
+
+        if (Input.GetButtonDown("PlaceTower"))
+        {
+            if (towerScript != null && pc.gold >= sellCost)
+            {
+                Destroy(towerScript.gameObject);
+                pc.RemoveGold(sellCost);
+            }
+        }
+        
     }
 
     private void TowerSelection()

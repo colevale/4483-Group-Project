@@ -8,7 +8,7 @@ public class Tower : MonoBehaviour
     private float shootTimer = 5;
     public int level = 0;
     private float towerValue = 200;
-    protected int[] cost = { 75, 150, 300 };
+    private int[] cost = { 75, 150, 300 };
     protected float timer;
 
     public LayerMask whatIsEnemy;
@@ -98,7 +98,7 @@ public class Tower : MonoBehaviour
         else return false;
     }
 
-    public int GetUpgradeCost()
+    public virtual int GetUpgradeCost()
     {
         if (cost.Length == level)
         {
@@ -107,7 +107,7 @@ public class Tower : MonoBehaviour
         else return cost[level];
     }
 
-    public int GetSellPrice()
+    public virtual int GetSellPrice()
     {
 
         return (int)Mathf.Floor(towerValue * 0.8f);

@@ -60,4 +60,9 @@ public class Trap : Tower
     {
         return false;
     }
+
+    public override int GetSellPrice()
+    {
+        return (int)Mathf.Floor(trapTowerValue * 0.8f);
+    }
 }
