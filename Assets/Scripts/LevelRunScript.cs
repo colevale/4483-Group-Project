@@ -63,6 +63,8 @@ public class LevelRunScript : MonoBehaviour
     {
         Debug.Log("start button clicked");
         //temporary
+        AudioManager.instance.TransitionSong("build", 1, 2);
+        AudioManager.instance.PlaySound("menu_select_final");
         SceneManager.LoadScene("proto_map");
     }
 }

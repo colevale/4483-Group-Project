@@ -17,6 +17,7 @@ public class SceneChangeScript : MonoBehaviour
     // changes scene with inputted name, using the desired scene name in project view
     public void ChangeScene(string Scene)
     {
+        AudioManager.instance.PlaySound("menu_select");
         SceneManager.LoadScene(Scene);
     }
 
@@ -28,6 +29,7 @@ public class SceneChangeScript : MonoBehaviour
      */
     public void ChangeLevelScene(string dualString)
     {
+        AudioManager.instance.PlaySound("menu_select");
         string[] parameters = dualString.Split('_');
         PlayerPrefs.SetInt("c_lvl", int.Parse(parameters[1]));
         SceneManager.LoadScene(parameters[0]);

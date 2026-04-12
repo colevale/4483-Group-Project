@@ -48,10 +48,6 @@ public class PlayerController : MonoBehaviour
 
 
     public GameObject towerPrefab;
-    
-
-
-    public ColliderList groundedCheck;
 
 
     bool nearCrystal;
@@ -99,7 +95,11 @@ public class PlayerController : MonoBehaviour
 
         if (!upgrading)
         {
+            bool wasGrounded = grounded;
             grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
+
+            if (!grounded && grounded)
+                AudioManager.instance.PlaySound("player_land");
 
             MyInput();
             SpeedControl();
@@ -122,6 +122,7 @@ public class PlayerController : MonoBehaviour
                 else
                 {
                     gun.Shoot(camera.rotation);
+                    
                 }
 
             }
@@ -195,6 +196,7 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
 
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        AudioManager.instance.PlaySound("player_jump");
     }
 
     private void ResetJump()
@@ -215,6 +217,8 @@ public class PlayerController : MonoBehaviour
     public void WaveStart()
     {
         crystalAct.WaveStart();
+        AudioManager.instance.TransitionSong("defend", 5, 10);
+        AudioManager.instance.PlaySound("wave_start");
 
         print("HERES WHERE THE WAVE WOULD START");
         WaveManager manager = wave.GetComponent<WaveManager>() ;

@@ -12,7 +12,14 @@ public class Enemy : MonoBehaviour
     public GameObject player;
     private PlayerController pc;
 
+
+    public AudioClip[] hurtSounds;
+    public AudioClip[] dieSounds;
+    AudioSource audioSource;
+
     Rigidbody rb;
+
+
 
 
     // THIS SCRIPT DOESN'T ACCOUNT FOR GRAVITY HOWEVER IT SHOULDN'T BE A PROBLEM JUST BE SURE TO LOCK THE Y POSITION IF THERE NEEDS TO BE GRAVITY
@@ -46,6 +53,8 @@ public class Enemy : MonoBehaviour
     {
         hpbar.SetMaxHP(maxHP);
         rb = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
+        audioSource.volume = AudioManager.instance.GetSFXVolume();
         
     }
 
@@ -88,12 +97,28 @@ public class Enemy : MonoBehaviour
 
         hpbar.UpdateHP(curHP);
 
+        int whichSound = Random.Range(0, 3);
+        float pitch = Random.Range(0.9f, 1.1f);
+
+
         if (curHP <= 0)
         {
-            Destroy(this.gameObject);
+            audioSource.clip = dieSounds[whichSound];
+
+
+            Destroy(this.gameObject); //TODO: We'd need to delay this for a death animation
             pc.AddGold(200);
+
             //Debug.Log(pc.gold);
         }
+        else
+            audioSource.clip = hurtSounds[whichSound];
+
+        audioSource.pitch = pitch;
+        audioSource.Play();
+
+        
+
             
         
 

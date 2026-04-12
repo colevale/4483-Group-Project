@@ -40,6 +40,8 @@ public class Gun : MonoBehaviour
 
         particles.Stop();
         particles.Play();
+
+        AudioManager.instance.PlaySound("player_shoot");
     }
 
 

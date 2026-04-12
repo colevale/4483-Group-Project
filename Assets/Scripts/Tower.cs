@@ -5,6 +5,10 @@ public class Tower : MonoBehaviour
 {
     public GameObject bulletPrefab;
 
+    public bool isSelected;
+    public Renderer rend;
+    Material mat;
+
     private float shootTimer = 5;
     public int level = 0;
     private float towerValue = 200;
@@ -19,10 +23,14 @@ public class Tower : MonoBehaviour
     public Transform gunBarrel;
     public Transform wholeTurret;
 
+    AudioSource audioSource;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         timer = shootTimer;
+        audioSource = GetComponent<AudioSource>();
+        mat = rend.material;
     }
 
     // Update is called once per frame
@@ -36,6 +44,8 @@ public class Tower : MonoBehaviour
         {
             TargetEnemy();
         }
+
+        mat.SetPropertyLock("_IsSelected", isSelected); //Prolly not the best place for it but it will do for now
     }
 
     private void TargetEnemy()
@@ -50,6 +60,9 @@ public class Tower : MonoBehaviour
 
             tempBullet.transform.position = gunBarrel.position;
             tempBullet.Shoot(gunBarrel.rotation);
+
+            audioSource.pitch = Random.Range(0.9f, 1.1f);
+            audioSource.Play();
         }
     }
 
