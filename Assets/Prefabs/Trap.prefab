@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5307690118263732744}
   m_Layer: 0
   m_Name: Trap
-  m_TagString: Untagged
+  m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46,6 +46,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 770a446faa747e14d93c22581ebbb669, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Trap
+  bulletPrefab: {fileID: 0}
+  level: 0
+  whatIsEnemy:
+    serializedVersion: 2
+    m_Bits: 0
+  sightRange: 0
+  enemyInSightRange: 0
+  gunBarrel: {fileID: 0}
+  wholeTurret: {fileID: 0}
   timeStuck: 0
   enemiesStuck: []
 --- !u!65 &5307690118263732744
@@ -67,8 +76,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.2447728, y: 3.4055133, z: 1}
+  m_Center: {x: 0.004220438, y: -1.2027566, z: 0}
 --- !u!1001 &1518769001404608637
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -77,6 +86,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6694910518271417838}
     m_Modifications:
+    - target: {fileID: 1968096958871905454, guid: 15d5c323aef854a98bb36b76e8b29e03, type: 3}
+      propertyPath: m_TagString
+      value: Tower
+      objectReference: {fileID: 0}
     - target: {fileID: 3783718839050387476, guid: 15d5c323aef854a98bb36b76e8b29e03, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.24
@@ -91,15 +104,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3783718839050387476, guid: 15d5c323aef854a98bb36b76e8b29e03, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.027
-      objectReference: {fileID: 0}
-    - target: {fileID: 3783718839050387476, guid: 15d5c323aef854a98bb36b76e8b29e03, type: 3}
-      propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3783718839050387476, guid: 15d5c323aef854a98bb36b76e8b29e03, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3783718839050387476, guid: 15d5c323aef854a98bb36b76e8b29e03, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.139
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3783718839050387476, guid: 15d5c323aef854a98bb36b76e8b29e03, type: 3}
       propertyPath: m_LocalRotation.w
@@ -136,6 +149,14 @@ PrefabInstance:
     - target: {fileID: 4596390231828929198, guid: 15d5c323aef854a98bb36b76e8b29e03, type: 3}
       propertyPath: m_Name
       value: oil
+      objectReference: {fileID: 0}
+    - target: {fileID: 4596390231828929198, guid: 15d5c323aef854a98bb36b76e8b29e03, type: 3}
+      propertyPath: m_TagString
+      value: Tower
+      objectReference: {fileID: 0}
+    - target: {fileID: 7951636534112327409, guid: 15d5c323aef854a98bb36b76e8b29e03, type: 3}
+      propertyPath: m_TagString
+      value: Tower
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3209545572013883535, guid: 15d5c323aef854a98bb36b76e8b29e03, type: 3}

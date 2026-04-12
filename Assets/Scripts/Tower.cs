@@ -5,17 +5,19 @@ public class Tower : MonoBehaviour
 {
     public GameObject bulletPrefab;
 
-    public float shootTimer = 5;
+    private float shootTimer = 5;
     public int level = 0;
-    float towerValue = 200;
-    int[] cost = {75, 150, 300};
-    float timer;
+    private float towerValue = 200;
+    private int[] cost = { 75, 150, 300 };
+    protected float timer;
+
+    public LayerMask whatIsEnemy;
+    public float sightRange;
+    public bool enemyInSightRange;
+    private Transform targetedEnemy = null;
 
     public Transform gunBarrel;
     public Transform wholeTurret;
-    
-   
-
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,7 +28,19 @@ public class Tower : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        enemyInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsEnemy);
+
         timer -= Time.deltaTime;
+
+        if (enemyInSightRange)
+        {
+            TargetEnemy();
+        }
+    }
+
+    private void TargetEnemy()
+    {
+        GetEnemy();
 
         if (timer <= 0)
         {
@@ -39,35 +53,43 @@ public class Tower : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void GetEnemy()
     {
+        Collider[] enemies = Physics.OverlapSphere(transform.position, sightRange, whatIsEnemy);
 
-        TargetEnemy(other);
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        TargetEnemy(other);
-    }
-
-    private void TargetEnemy(Collider other)
-    {
-        if (other.gameObject.tag == "Enemy")
+        if (targetedEnemy == null)
         {
-            wholeTurret.LookAt(other.transform);
+            targetedEnemy = enemies[enemies.Length-1].transform;
         }
+
+        wholeTurret.LookAt(targetedEnemy);
+
+        foreach (Collider target in enemies)
+        {
+            if (target.transform == targetedEnemy)
+            {
+                return;
+            }
+        }
+
+        targetedEnemy = null;
     }
 
-    public void Upgrade()
+    public virtual void Upgrade()
     {
         //put any upgrades here before the level increments
         shootTimer = shootTimer / 2; //shoot faster
-       
+
         towerValue = towerValue + cost[level];
         level++;
     }
 
-    public bool CanUpgrade()
+    public virtual float GetValue()
+    {
+        return towerValue;
+    }
+
+    public virtual bool CanUpgrade()
     {
         if (level < cost.Length)
         {
@@ -76,7 +98,7 @@ public class Tower : MonoBehaviour
         else return false;
     }
 
-    public int GetUpgradeCost()
+    public virtual int GetUpgradeCost()
     {
         if (cost.Length == level)
         {
@@ -85,9 +107,10 @@ public class Tower : MonoBehaviour
         else return cost[level];
     }
 
-    public int GetSellPrice()
+    public virtual int GetSellPrice()
     {
-        
-        return (int) Mathf.Floor(towerValue * 0.8f);
+
+        return (int)Mathf.Floor(towerValue * 0.8f);
     }
 }
+

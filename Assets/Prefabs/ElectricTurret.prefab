@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2699131871810692642}
   m_Layer: 7
   m_Name: Turret Stand (1)
-  m_TagString: Untagged
+  m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 5586087950027986288}
   m_Layer: 7
   m_Name: Turret Stand
-  m_TagString: Untagged
+  m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -195,7 +195,7 @@ GameObject:
   - component: {fileID: 6275108823803791958}
   m_Layer: 0
   m_Name: ElectricTurret
-  m_TagString: Untagged
+  m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -237,8 +237,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe3780317e0481044ae61ae30632187b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerElectric
-  shootTimer: 7
+  bulletPrefab: {fileID: 0}
   level: 0
+  whatIsEnemy:
+    serializedVersion: 2
+    m_Bits: 0
+  sightRange: 0
+  enemyInSightRange: 0
+  gunBarrel: {fileID: 0}
+  wholeTurret: {fileID: 0}
 --- !u!23 &8987232516297171778
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -307,5 +314,5 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 1.2132375
+  m_Center: {x: 0, y: -0.71323776, z: 0}

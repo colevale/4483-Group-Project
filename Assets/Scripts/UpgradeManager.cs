@@ -50,6 +50,7 @@ public class UpgradeManager : MonoBehaviour
     private bool isOpen = false;
 
     private PlayerController player;
+    private PlayerCam playerCam;
     private int damage = 2;
     private float projectileSpeed = 10;
     private float knockback = 50;
@@ -58,7 +59,7 @@ public class UpgradeManager : MonoBehaviour
     {
         GoldWarningText(false);
         player = GameObject.Find("Player").GetComponent<PlayerController>();
-
+        playerCam = GameObject.Find("Main Camera").GetComponent<PlayerCam>();
         GetImages(fireRateButtonHolder, fireRateColor);
         GetImages(damageButtonHolder, damageColor);
         GetImages(projectileSpeedButtonHolder, projectileSpeedColor);
@@ -110,11 +111,19 @@ public class UpgradeManager : MonoBehaviour
         if (onOff)
         {
             upgradeMenu.SetActive(true);
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
         }
         else
         {
             upgradeMenu.SetActive(false);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
+
+        player.SwitchUpgrading();
+        playerCam.SwitchUpgrading();
     }
 
     public void GoldWarningText(bool onOff)

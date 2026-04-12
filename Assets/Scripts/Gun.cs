@@ -12,6 +12,7 @@ public class Gun : MonoBehaviour
     public GameObject bulletPrefab;
 
     bool readyToShoot = true;
+    public bool canShoot = true;
 
     private void Start()
     {
@@ -22,7 +23,7 @@ public class Gun : MonoBehaviour
 
     public void Shoot(Quaternion direction)
     {
-        if (!readyToShoot)
+        if (!readyToShoot || !canShoot)
             return;
 
         readyToShoot = false;
@@ -61,4 +62,8 @@ public class Gun : MonoBehaviour
         anim.speed = 0;
     }
 
+    public void SetShot(bool change)
+    {
+        canShoot = change;
+    }
 }

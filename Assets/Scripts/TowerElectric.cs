@@ -1,12 +1,10 @@
 using UnityEngine;
 
-public class TowerElectric : MonoBehaviour
+public class TowerElectric : Tower
 {
-    public float shootTimer = 7;
-    public int level = 0;
-    float towerValue = 500;
-    int[] cost = { 200, 400, 600 };
-    float timer;
+    private float electricShootTimer = 7;
+    private float electricTowerValue = 500;
+    private int[] electricCost = { 200, 400, 600 };
 
     private float radius;
     private int damage;
@@ -14,7 +12,8 @@ public class TowerElectric : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        timer = shootTimer;
+        timer = electricShootTimer;
+        level = 0;
         radius = 15;
         damage = 2;
     }
@@ -26,7 +25,7 @@ public class TowerElectric : MonoBehaviour
 
         if (timer <= 0)
         {
-            timer = shootTimer;
+            timer = electricShootTimer;
 
             Collider[] whatWasHit = Physics.OverlapSphere(gameObject.transform.position, radius);
 
@@ -35,7 +34,7 @@ public class TowerElectric : MonoBehaviour
                 if (CheckEnemy(hit))
                 {
                     // Please update enemy script to not always take knockback...
-                    hit.gameObject.GetComponent<Enemy>().TakeDamage(damage, new Vector3(0,0,0));
+                    hit.gameObject.GetComponent<Enemy>().TakeDamage(damage, new Vector3(0, 0, 0));
                 }
             }
         }
@@ -51,37 +50,32 @@ public class TowerElectric : MonoBehaviour
         return false;
     }
 
-    public void Upgrade()
+    public override float GetValue()
+    {
+        return electricTowerValue;
+    }
+
+    public override int GetUpgradeCost()
+    {
+        if (electricCost.Length == level)
+        {
+            return 0;
+        }
+        else return electricCost[level];
+    }
+
+    public override void Upgrade()
     {
         radius += 5; //hits at longer distance
         damage += 1; //deals more damage
 
-        towerValue = towerValue + cost[level];
+        electricTowerValue = electricTowerValue + electricCost[level];
         level++;
     }
 
-    public bool CanUpgrade()
+    public override int GetSellPrice()
     {
-        if (level < cost.Length)
-        {
-            return true;
-        }
-        else return false;
-    }
-
-    public int GetUpgradeCost()
-    {
-        if (cost.Length == level)
-        {
-            return 0;
-        }
-        else return cost[level];
-    }
-
-    public int GetSellPrice()
-    {
-
-        return (int)Mathf.Floor(towerValue * 0.8f);
+        return (int)Mathf.Floor(electricTowerValue * 0.8f);
     }
 }
 
