@@ -16,6 +16,7 @@ public class TowerElectric : Tower
         level = 0;
         radius = 15;
         damage = 2;
+        rend = GetComponentsInChildren<Renderer>();
     }
 
     // Update is called once per frame
@@ -38,6 +39,8 @@ public class TowerElectric : Tower
                 }
             }
         }
+
+        SetRendStatus();
     }
 
     private bool CheckEnemy(Collider other)

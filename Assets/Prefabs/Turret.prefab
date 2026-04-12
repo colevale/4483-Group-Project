@@ -81,7 +81,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 3527704262865744493, guid: dee105233bd50fc44bd345a2484d1665, type: 3}
   isSelected: 0
-  rend: {fileID: 6329326186966129749}
   level: 0
   whatIsEnemy:
     serializedVersion: 2
@@ -292,10 +291,5 @@ PrefabInstance:
 --- !u!4 &5160391243279001402 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5823700304144970697, guid: 374c6ba29fb69ea4b9065368a821b03d, type: 3}
-  m_PrefabInstance: {fileID: 1678880506450236659}
-  m_PrefabAsset: {fileID: 0}
---- !u!23 &6329326186966129749 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 4655275396415801510, guid: 374c6ba29fb69ea4b9065368a821b03d, type: 3}
   m_PrefabInstance: {fileID: 1678880506450236659}
   m_PrefabAsset: {fileID: 0}

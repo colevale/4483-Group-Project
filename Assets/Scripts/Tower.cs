@@ -5,9 +5,8 @@ public class Tower : MonoBehaviour
 {
     public GameObject bulletPrefab;
 
-    public bool isSelected;
-    public Renderer rend;
-    Material mat;
+    public bool isSelected = false;
+    protected Renderer[] rend;
 
     private float shootTimer = 5;
     public int level = 0;
@@ -30,7 +29,7 @@ public class Tower : MonoBehaviour
     {
         timer = shootTimer;
         audioSource = GetComponent<AudioSource>();
-        mat = rend.material;
+        rend = GetComponentsInChildren<Renderer>();
     }
 
     // Update is called once per frame
@@ -45,7 +44,20 @@ public class Tower : MonoBehaviour
             TargetEnemy();
         }
 
-        mat.SetPropertyLock("_IsSelected", isSelected); //Prolly not the best place for it but it will do for now
+        SetRendStatus();
+    }
+
+    protected void SetRendStatus()
+    {
+        foreach (Renderer childRends in rend)
+        {
+            childRends.material.SetInt("_IsSelected", isSelected ? 1 : 0);
+        }
+    }
+
+    public void ChangeRendStatus(bool value)
+    {
+        isSelected = value;
     }
 
     private void TargetEnemy()

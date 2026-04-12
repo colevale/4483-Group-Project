@@ -238,6 +238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerElectric
   bulletPrefab: {fileID: 0}
+  isSelected: 0
   level: 0
   whatIsEnemy:
     serializedVersion: 2

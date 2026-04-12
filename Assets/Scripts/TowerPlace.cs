@@ -33,6 +33,7 @@ public class TowerPlace : MonoBehaviour
 
     public GameObject playerGun;
     private Gun gunScript;
+    public Transform towerHolder;
 
     private void Awake()
     {
@@ -84,6 +85,7 @@ public class TowerPlace : MonoBehaviour
     //build ghost tower obj
     private void drawGhost()
     {
+        ResetSelection();
         TowerSelection();
 
         GameObject currentTower = selectedTowers[selected_tower];
@@ -187,6 +189,7 @@ public class TowerPlace : MonoBehaviour
             if (ghostTowerGameObject != null & isGhostInValidPosition)
             {
                 GameObject tower = Instantiate(selectedTowers[selected_tower], ghostTowerGameObject.transform.position, ghostTowerGameObject.transform.rotation);
+                tower.transform.SetParent(towerHolder);
 
                 pc.RemoveGold((int)tower.GetComponent<Tower>().GetValue());
             } 
@@ -200,6 +203,7 @@ public class TowerPlace : MonoBehaviour
         int sellCost = towerScript.GetSellPrice();
 
         tmp_indicator.gameObject.SetActive(false);
+        towerScript.ChangeRendStatus(true);
 
         if (towerScript.CanUpgrade())
         {
@@ -230,7 +234,6 @@ public class TowerPlace : MonoBehaviour
                 pc.RemoveGold(sellCost);
             }
         }
-        
     }
 
     private void TowerSelection()
@@ -273,6 +276,16 @@ public class TowerPlace : MonoBehaviour
             arrows[newTower].color = new Color(1f, 1f, 1f, 1f);
             selected_tower = newTower;
             tmp_indicator.SetText("Building Mode " + selectedTowers[selected_tower].GetComponent<Tower>().GetValue().ToString() + "G for Tower");
+        }
+    }
+
+    private void ResetSelection()
+    {
+        Tower[] towerChildren = towerHolder.GetComponentsInChildren<Tower>();
+
+        foreach (Tower towerScript in towerChildren)
+        {
+            towerScript.ChangeRendStatus(false);
         }
     }
 }

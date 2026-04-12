@@ -15,6 +15,7 @@ public class Trap : Tower
     {
         timeStuck = 4;
         enemyStuck = false;
+        rend = GetComponentsInChildren<Renderer>();
     }
 
     private void Update()
@@ -33,6 +34,8 @@ public class Trap : Tower
                 Destroy(gameObject);
             }
         }
+
+        SetRendStatus();
     }
 
 
