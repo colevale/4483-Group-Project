@@ -7,6 +7,8 @@ TagManager:
   - Enemy
   - Ground
   - Tower
+  - Enemy Attack
+  - Crystal
   layers:
   - Default
   - TransparentFX

@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -52,14 +53,37 @@ public class PlayerController : MonoBehaviour
     bool nearCrystal;
     public CrystalActivation crystalAct;
 
+    public HPBar hpbar;
+
+    public int maxHP;
+    int curHP;
+
+    bool playerDead = false;
+    public float respawnTime = 5;
+    float respawenTimeCur;
+
+    bool crystalDead = false;
+
+    public Animator deathAnim;
+    Vector3 spawnPoint;
+
+    public Animator crystalDeathAnim;
+
+    public TextMeshProUGUI respawnText1;
+    public TextMeshProUGUI respawnText2;
+
     private void Awake()
     {
         timeBetweenShots = (float) 0.75;
+        
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (playcon == null)
+            playcon = this;
+
         gold = PlayerPrefs.GetInt("gold"); //gold from previous campaigns
         Cursor.lockState = CursorLockMode.Locked;
         if (playcon == null)
@@ -68,11 +92,53 @@ public class PlayerController : MonoBehaviour
         rb.freezeRotation = true;
         readyToJump = true;
         upgrading = false;
+
+
+        curHP = maxHP;
+        hpbar.SetMaxHP(maxHP);
+        hpbar.UpdateHP(curHP);
+
+        spawnPoint = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (crystalDead)
+        {
+
+            if (Input.GetButtonDown("Shoot") || Input.GetKeyDown(KeyCode.E))
+            {
+                AudioManager.instance.PlaySound("menu_back");
+                AudioManager.instance.TransitionSong("menu", 2, 5);
+                SceneManager.LoadScene("MainMenu");
+            }
+
+            return;
+        }
+
+
+        //if the player is dead, accept no inputs
+        if (playerDead)
+        {
+            respawenTimeCur -= Time.deltaTime;
+            if (respawenTimeCur < 0)
+            {
+                playerDead = false;
+                deathAnim.SetBool("OnOff", false);
+                transform.position = spawnPoint;
+                respawenTimeCur = 0;
+            }
+
+            respawnText1.text = "You Died!\nRespawn in: " + (int)(respawenTimeCur+1) + "s";
+            respawnText2.text = "You Died!\nRespawn in: " + (int)(respawenTimeCur+1) + "s";
+
+
+            return;
+        }
+
+
+
         if (!upgrading)
         {
             bool wasGrounded = grounded;
@@ -201,5 +267,42 @@ public class PlayerController : MonoBehaviour
     public void SaveGold()
     {
         PlayerPrefs.SetInt("gold", gold);
+    }
+
+
+    public void TakeDamage(int damage, Vector3 knockback)
+    {
+        curHP -= damage;
+
+        if (curHP <= 0)
+        {
+            curHP = 0;
+            AudioManager.instance.PlaySound("player_die");
+            deathAnim.SetBool("OnOff", true);
+            respawenTimeCur = respawnTime;
+            playerDead = true;
+        }    
+        else
+        {
+            AudioManager.instance.PlaySound("player_hurt");
+        }
+
+        
+        hpbar.UpdateHP(curHP);
+        rb.AddForce(knockback);
+
+        
+    }
+
+    public void Heal()
+    {
+        curHP = maxHP;
+        hpbar.UpdateHP(curHP);
+    }
+
+    public void GameLose()
+    {
+        crystalDeathAnim.SetBool("OnOff", true);
+        crystalDead = true;
     }
 }

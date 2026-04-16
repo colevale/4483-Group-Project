@@ -36,7 +36,7 @@ public class Tower : MonoBehaviour
     void Update()
     {
         enemyInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsEnemy);
-
+        
         timer -= Time.deltaTime;
 
         if (enemyInSightRange)

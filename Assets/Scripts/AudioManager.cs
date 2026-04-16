@@ -133,6 +133,9 @@ public class AudioManager : MonoBehaviour
         AudioClip clip = buildSong;
         switch (nextSong)
         {
+            case "menu":
+                clip = menuSong;
+                break;
             case "build":
                 clip = buildSong;
                 break;
@@ -175,20 +178,6 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySound(string sound)
     {
-        /*
-        if (sfx exists)
-        {
-            PlaySfx1(sound);
-        }
-        else if (sfx2 exists
-        {
-            PlaySfx2(sound);
-        }
-        else
-        {
-            do nothing like a loser
-        }
-        */
 
         switch (sound)
         {
@@ -220,13 +209,15 @@ public class AudioManager : MonoBehaviour
                 sfx.clip = playerLand;
                 break;
             case "wave_end":
-                sfx.clip = waveEnd;
-                break;
+                sfx2.clip = waveEnd;
+                sfx2.Play();
+                return;
             case "wave_start":
-                sfx.clip = waveStart;
-                break;
+                sfx2.clip = waveStart;
+                sfx2.Play();
+                return;
             default:
-                sfx.clip = null;
+                sfx.clip = null;    
                 break;
         }
 

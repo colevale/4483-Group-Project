@@ -1,4 +1,6 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CrystalActivation : MonoBehaviour
 {
@@ -17,6 +19,11 @@ public class CrystalActivation : MonoBehaviour
     float volumeTimer = 0;
     public float volumeTransitionSpeed = 0.2f;
 
+
+    bool hasWon;
+
+    public TextMeshProUGUI text1;
+    public TextMeshProUGUI text2;
 
     void OnTriggerEnter(Collider other)
     {
@@ -65,6 +72,15 @@ public class CrystalActivation : MonoBehaviour
 
     public void WaveStart()
     {
+        if (hasWon)
+        {
+            AudioManager.instance.PlaySound("menu_select_final");
+            AudioManager.instance.TransitionSong("menu", 2, 5);
+            SceneManager.LoadScene("LevelRun");
+        }
+            
+
+
         AudioManager.instance.TransitionSong("defend", 5, 10);
         AudioManager.instance.PlaySound("wave_start");
         wave.StartWave();
@@ -80,5 +96,15 @@ public class CrystalActivation : MonoBehaviour
         AudioManager.instance.PlaySound("wave_end");
         crystalLight.intensity = 0;
         inAWave = false;
+    }
+
+
+    public void OnWin()
+    {
+        hasWon = true;
+        inAWave = false;
+
+        text1.text = "Return to menu?";
+        text2.text = "Return to menu?";
     }
 }

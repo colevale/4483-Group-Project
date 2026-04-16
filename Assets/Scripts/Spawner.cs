@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
+    public static Spawner instance;
+
+
     public GameObject checkpoints;
     private int numberToSpawn;
     private int counter;
@@ -24,6 +27,11 @@ public class Spawner : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(this.gameObject);
+
         counter = -1;
         spawned = new List<GameObject>();
         enemiesSpawned = false;
@@ -100,5 +108,11 @@ public class Spawner : MonoBehaviour
             StartCoroutine(spawnEnemy(interval, enemy));
 
         }
+    }
+
+
+    public void RemoveEnemy(GameObject enemy)
+    {
+        spawned.Remove(enemy);
     }
 }
