@@ -79,7 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac528b53623fd0b43be61c2d46d4bccf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 3527704262865744493, guid: dee105233bd50fc44bd345a2484d1665, type: 3}
+  bulletPrefab: {fileID: 3527704262865744493, guid: c5ba95d904e4010408e29c722d8cf249, type: 3}
   isSelected: 0
   level: 0
   whatIsEnemy:

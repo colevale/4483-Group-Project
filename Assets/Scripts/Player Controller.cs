@@ -36,7 +36,6 @@ public class PlayerController : MonoBehaviour
 
     //  upgrades
     public float timeBetweenShots;
-    public bool readyToShoot;
 
     public int gold;
     public TMP_Text goldDisplay;
@@ -55,7 +54,6 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        readyToShoot = true;
         timeBetweenShots = (float) 0.75;
     }
 
@@ -75,24 +73,6 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*
-        if (Input.GetKeyDown("l"))
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-
-
-        }
-
-        if (Input.GetKeyDown("u"))
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-
-
-        }
-        */
-
         if (!upgrading)
         {
             bool wasGrounded = grounded;
@@ -117,28 +97,10 @@ public class PlayerController : MonoBehaviour
             bool shoot = Input.GetButtonDown("Shoot");
             if (shoot)
             {
-                if (nearCrystal)
-                    WaveStart();
-                else
-                {
-                    gun.Shoot(camera.rotation);
-                    
-                }
-
+                gun.Shoot(camera.rotation);
             }
             gun.UpdateSpeed(rb.linearVelocity.magnitude);
         }
-
-        /* //infinite towers
-        bool placeTower = Input.GetButtonDown("PlaceTower");
-
-        if (placeTower)
-        {
-            Tower tempTower = Instantiate<GameObject>(towerPrefab).GetComponent<Tower>();
-
-            tempTower.transform.position = new Vector3(gunBarrel.position.x, 1.5f, gunBarrel.position.z);
-            tempTower.transform.rotation = transform.rotation;
-        }*/
 
 
         if (Input.GetButtonDown("Exit"))
@@ -204,31 +166,9 @@ public class PlayerController : MonoBehaviour
         readyToJump = true;
     }
 
-    public void SetNearCrystal(bool near)
-    {
-        nearCrystal = near;
-    }
-
     public void SwitchUpgrading()
     {
         upgrading = !upgrading;
-    }
-
-    public void WaveStart()
-    {
-        crystalAct.WaveStart();
-        AudioManager.instance.TransitionSong("defend", 5, 10);
-        AudioManager.instance.PlaySound("wave_start");
-
-        print("HERES WHERE THE WAVE WOULD START");
-        WaveManager manager = wave.GetComponent<WaveManager>() ;
-        manager.StartWave();
-        Debug.Log("Wave has started");
-    }
-
-    public void ResetShot()
-    {
-        readyToShoot = true;
     }
 
     public void UpgradeShotTime(float upgradeBy)

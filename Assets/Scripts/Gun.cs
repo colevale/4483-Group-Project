@@ -24,7 +24,9 @@ public class Gun : MonoBehaviour
     public void Shoot(Quaternion direction)
     {
         if (!readyToShoot || !canShoot)
+        {
             return;
+        }
 
         readyToShoot = false;
 

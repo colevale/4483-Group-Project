@@ -136,7 +136,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4606045439757122733, guid: 7f1a98ab9b1b54240862cf9fc5a942d8, type: 3}
       propertyPath: checkPoints.Array.size
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4606045439757122733, guid: 7f1a98ab9b1b54240862cf9fc5a942d8, type: 3}
       propertyPath: 'dieSounds.Array.data[0]'
@@ -164,15 +164,15 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: 378255b516482424181b3387dc3ee63b, type: 3}
     - target: {fileID: 6160481223666176303, guid: 7f1a98ab9b1b54240862cf9fc5a942d8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 159.8
+      value: 160.17
       objectReference: {fileID: 0}
     - target: {fileID: 6160481223666176303, guid: 7f1a98ab9b1b54240862cf9fc5a942d8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6
+      value: 4.61
       objectReference: {fileID: 0}
     - target: {fileID: 6160481223666176303, guid: 7f1a98ab9b1b54240862cf9fc5a942d8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -69.6
+      value: -67.4
       objectReference: {fileID: 0}
     - target: {fileID: 6160481223666176303, guid: 7f1a98ab9b1b54240862cf9fc5a942d8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -240,9 +240,6 @@ PrefabInstance:
       addedObject: {fileID: 9441687712470372}
     - targetCorrespondingSourceObject: {fileID: 284068879376159659, guid: 7f1a98ab9b1b54240862cf9fc5a942d8, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2456289749898257105}
-    - targetCorrespondingSourceObject: {fileID: 284068879376159659, guid: 7f1a98ab9b1b54240862cf9fc5a942d8, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 3944896742535698632}
   m_SourcePrefab: {fileID: 100100000, guid: 7f1a98ab9b1b54240862cf9fc5a942d8, type: 3}
 --- !u!4 &2410635343245013044 stripped
@@ -265,7 +262,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 6
+  m_Speed: 8
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -277,20 +274,6 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 0
---- !u!114 &2456289749898257105
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8645528365580513968}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2fb19a8d9dd586448aab88b1cbfd22f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyWaypoints
-  agent: {fileID: 9441687712470372}
-  waypoints: []
 --- !u!82 &3944896742535698632
 AudioSource:
   m_ObjectHideFlags: 0

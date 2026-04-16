@@ -28,7 +28,7 @@ public class Trap : Tower
             {
                 foreach (var collider in enemiesStuck)
                 {
-                    collider.gameObject.GetComponent<NavMeshAgent>().speed = 3.5f; // can reduce if we want "sticky" effect
+                    collider.gameObject.GetComponent<NavMeshAgent>().speed = 8f; // can reduce if we want "sticky" effect
                 }
 
                 Destroy(gameObject);

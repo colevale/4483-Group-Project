@@ -61,14 +61,17 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*if (!nextWalkPointSet)
+        Debug.Log("Run?");
+        if (!nextWalkPointSet)
         {
             FindNextCheckpoint();
+            Debug.Log("Find Path");
         }
 
         if (nextWalkPointSet)
         {
             agent.SetDestination(nextWalkPoint);
+            Debug.Log("Go To Path");
         }
 
         Vector3 distanceToCheckpoint = transform.position - nextWalkPoint;
@@ -83,7 +86,7 @@ public class Enemy : MonoBehaviour
             {
                 currentCheckpoint++;
             }
-        }*/
+        }
     }
 
     public void setupPlayer()
@@ -117,11 +120,6 @@ public class Enemy : MonoBehaviour
         audioSource.pitch = pitch;
         audioSource.Play();
 
-        
-
-            
-        
-
         rb.AddForce(knockback);
     }
 
@@ -129,9 +127,17 @@ public class Enemy : MonoBehaviour
     {
         nextWalkPoint = new Vector3(checkPoints[currentCheckpoint].position.x, transform.position.y, checkPoints[currentCheckpoint].position.z);
 
-        if (Physics.Raycast(nextWalkPoint, -transform.up, 2f, ground))
+        nextWalkPointSet = true;
+    }
+
+    public void Setup(GameObject checkpoints)
+    {
+        for (int i = 0; i < checkpoints.transform.childCount; i++)
         {
-            nextWalkPointSet = true;
+            //Debug.Log(checkpoints.transform.GetChild(i).name);
+            checkPoints.Add(checkpoints.transform.GetChild(i).transform);
         }
+
+        checkPoints.Add(checkpoints.transform);
     }
 }

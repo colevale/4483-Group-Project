@@ -68,7 +68,7 @@ public class Tower : MonoBehaviour
         {
             timer = shootTimer;
 
-            Projectile tempBullet = Instantiate<GameObject>(bulletPrefab).GetComponent<Projectile>();
+            TurretBullet tempBullet = Instantiate<GameObject>(bulletPrefab).GetComponent<TurretBullet>();
 
             tempBullet.transform.position = gunBarrel.position;
             tempBullet.Shoot(gunBarrel.rotation);
