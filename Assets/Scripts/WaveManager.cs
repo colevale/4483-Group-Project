@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Unity.VectorGraphics;
@@ -40,6 +41,7 @@ public class WaveManager : MonoBehaviour
             if (spawnScript.doneSpawning )
             {
                 PlayerPrefs.SetInt("progress", level + 1);
+
                 playerController.SaveGold();
                 SceneManager.LoadScene("LevelRun");
             }
@@ -57,5 +59,17 @@ public class WaveManager : MonoBehaviour
         }
     }
 
+    private IEnumerator GameEnding(int choice)
+    {
+        if (choice == 0)
+        {
+            PlayerPrefs.SetInt("ending", 0);
+        }
+        else
+        {
+             PlayerPrefs.SetInt("ending", 1);
+        }
+        yield return new WaitForSeconds(1.0f);
+    }
     
 }

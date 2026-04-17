@@ -56,7 +56,15 @@ public class LevelRunScript : MonoBehaviour
         
     }
 
-  
+    private void FixedUpdate()
+    {
+        //not the most elegant solution but this'll do
+        int currentProg = PlayerPrefs.GetInt("progress");
+        if (currentProg > 2)
+        {
+            SceneManager.LoadScene("MoralChoice");
+        }
+    }
 
     //stub to change scene if we are not using this scene for the level
     void changeScene()
