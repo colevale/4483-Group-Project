@@ -8,11 +8,13 @@ using UnityEngine.SceneManagement;
 public class WaveManager : MonoBehaviour
 {
     public GameObject[] primarySpawners;
+    private GameObject[] levelSpawners;
 
     public int[] waves; // # of waves equal to array length, input of array equal to total enemies spawned in wave
     int currWave;
-    bool waveInProgress;
-    bool waveStart;
+    private bool[] eachWaveCheck;
+    bool fullCheck;
+    bool waveEnd;
 
     int level;
 
@@ -32,37 +34,86 @@ public class WaveManager : MonoBehaviour
     public TextMeshProUGUI waveText1;
     public TextMeshProUGUI waveText2;
 
+    private void Awake()
+    {
+        foreach (Animator an in doors)
+        {
+            an.SetBool("IsOpen", false);
+        }
+    }
 
     // i probably didn't have time before activity 5 to fully implement wave oh well
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         level = PlayerPrefs.GetInt("progress");
+        GetLevelSpawner(level);
         timeForWave = dayCycle.getTimeInOneDay() / waves.Length;
         currWave = 0;
-        OpenDoors(waveDoors[currWave]);
-        waveInProgress = false;
-        waveStart = false;
+        waveEnd = true;
     }
 
     private void Update()
     {
-        foreach (GameObject spawner in primarySpawners)
+        int i = 0;
+        fullCheck = true;
+        foreach (GameObject spawner in levelSpawners)
         {
             Spawner spawnScript = spawner.GetComponent<Spawner>();
             if (spawnScript.enemiesDefeated() && spawnScript.allEnemiesSpawned())
             {
-                waveInProgress = false;
+                eachWaveCheck[i] = true;
             }
             else
             {
-                waveInProgress = true;
+                eachWaveCheck[i] = false;
+            }
+            i++;
+        }
+
+        foreach (bool check in eachWaveCheck)
+        {
+            if (check == false)
+            {
+                fullCheck = false;
             }
         }
 
-        if (waveStart && !waveInProgress)
+        if (fullCheck && !waveEnd)
         {
+            waveEnd = true;
             EndWave();
+        }
+    }
+
+    public void GetLevelSpawner(int level)
+    {
+        int howManyDoorsOpen;
+
+        switch (level)
+        {
+            case 1:
+                howManyDoorsOpen = 1;
+                break;
+            case 2:
+                howManyDoorsOpen = 2;
+                break;
+            case 3:
+                howManyDoorsOpen = 4;
+                break;
+            default:
+                howManyDoorsOpen = 1;
+                break;
+        }
+
+        levelSpawners = new GameObject[howManyDoorsOpen];
+        eachWaveCheck = new bool[howManyDoorsOpen];
+
+        for (int i = 0; i < levelSpawners.Length; i++)
+        {
+            OpenDoors(i);
+            levelSpawners[i] = primarySpawners[i];
+            eachWaveCheck[i] = false;
         }
     }
 
@@ -72,25 +123,20 @@ public class WaveManager : MonoBehaviour
         dayCycle.ResumeTime();
 
         //multi spawn
-        foreach (GameObject spawner in primarySpawners)
+        foreach (GameObject spawner in levelSpawners)
         {
             Spawner spawnScript = spawner.GetComponent<Spawner>();
-            spawnScript.setSpawnNumber(waves[currWave] / primarySpawners.Length);
+            spawnScript.setSpawnNumber(waves[currWave]);
             spawnScript.StartWave();
         }
 
         currWave++;
-        waveStart = true;
-        
+        waveEnd = false;
     }
 
     public void EndWave()
     {
-        OpenDoors(waveDoors[currWave]);
         PlayerController.playcon.Heal();
-
-        waveInProgress = false;
-        waveStart = false;
         //proof of concept with single wave
         playerController = player.GetComponent<PlayerController>();
         //most of the componentry will be extended
@@ -110,10 +156,13 @@ public class WaveManager : MonoBehaviour
         }
         else
         {
-            foreach (GameObject spawner in primarySpawners)
+            int i = 0;
+            foreach (GameObject spawner in levelSpawners)
             {
                 Spawner spawnScript = spawner.GetComponent<Spawner>();
                 spawnScript.ResetWave();
+                eachWaveCheck[i] = false;
+                i++;
             }
             crystalObject.EndWave();
 
@@ -129,13 +178,6 @@ public class WaveManager : MonoBehaviour
 
     void OpenDoors(int whichDoors)
     {
-
-        int i = 0;
-        while (whichDoors > 0)
-        {
-            doors[i].SetBool("IsOpen", whichDoors % 10 != 0);
-            whichDoors /= 10;
-            i++;
-        }
+         doors[whichDoors].SetBool("IsOpen", true);
     }
 }

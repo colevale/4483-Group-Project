@@ -73,8 +73,6 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        //Debug.Log("Run?");
         if (!nextWalkPointSet)
         {
             FindNextCheckpoint();
@@ -84,13 +82,12 @@ public class Enemy : MonoBehaviour
         if (nextWalkPointSet)
         {
             agent.SetDestination(nextWalkPoint);
-            //Debug.Log("Go To Path");
         }
 
         Vector3 distanceToCheckpoint = transform.position - nextWalkPoint;
 
         // Checks if enemy is next at checkpoint
-        if (distanceToCheckpoint.magnitude < 1f)
+        if (distanceToCheckpoint.magnitude < 3f)
         {
             nextWalkPointSet = false;
 

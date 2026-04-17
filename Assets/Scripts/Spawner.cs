@@ -27,11 +27,6 @@ public class Spawner : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (instance == null)
-            instance = this;
-        else
-            Destroy(this.gameObject);
-
         counter = -1;
         spawned = new List<GameObject>();
         enemiesSpawned = false;
