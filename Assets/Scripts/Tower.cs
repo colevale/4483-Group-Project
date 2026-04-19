@@ -10,8 +10,8 @@ public class Tower : MonoBehaviour
 
     private float shootTimer = 5;
     public int level = 0;
-    private float towerValue = 200;
-    private int[] cost = { 75, 150, 300 };
+    private float towerValue = 400;
+    private int[] cost = { 200, 400, 600 };
     protected float timer;
 
     public LayerMask whatIsEnemy;
