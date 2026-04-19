@@ -19,7 +19,18 @@ public class Enemy : MonoBehaviour
 
     Rigidbody rb;
 
+    public Animator anim;
 
+    bool isDead;
+    public float despawnTime;
+    float despawnTimer;
+    Vector3 baseScale;
+
+    public float attackCooldown;
+
+    public EnemyAttack attackHitbox;
+
+    bool attacking;
 
 
     // THIS SCRIPT DOESN'T ACCOUNT FOR GRAVITY HOWEVER IT SHOULDN'T BE A PROBLEM JUST BE SURE TO LOCK THE Y POSITION IF THERE NEEDS TO BE GRAVITY
@@ -55,15 +66,17 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
         audioSource.volume = AudioManager.instance.GetSFXVolume();
+        baseScale = transform.localScale;
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        /*if (!nextWalkPointSet)
+        if (!nextWalkPointSet)
         {
             FindNextCheckpoint();
+            //Debug.Log("Find Path");
         }
 
         if (nextWalkPointSet)
@@ -74,7 +87,7 @@ public class Enemy : MonoBehaviour
         Vector3 distanceToCheckpoint = transform.position - nextWalkPoint;
 
         // Checks if enemy is next at checkpoint
-        if (distanceToCheckpoint.magnitude < 1f)
+        if (distanceToCheckpoint.magnitude < 3f)
         {
             nextWalkPointSet = false;
 
@@ -83,7 +96,13 @@ public class Enemy : MonoBehaviour
             {
                 currentCheckpoint++;
             }
-        }*/
+        }
+
+        if (isDead)
+        {
+            despawnTimer += Time.deltaTime;
+            transform.localScale = baseScale * (1 - despawnTimer / despawnTime);
+        }
     }
 
     public void setupPlayer()
@@ -105,33 +124,79 @@ public class Enemy : MonoBehaviour
         {
             audioSource.clip = dieSounds[whichSound];
 
-
-            Destroy(this.gameObject); //TODO: We'd need to delay this for a death animation
+            agent.Stop();
+            Invoke(nameof(DeleteSelf), despawnTime); //TODO: We'd need to delay this for a death animation
             pc.AddGold(200);
+            anim.SetTrigger("Die");
+            isDead = true;
+
+            Spawner.instance.RemoveEnemy(this.gameObject);
+
+            gameObject.tag = "None";
+            
 
             //Debug.Log(pc.gold);
         }
         else
+        {
             audioSource.clip = hurtSounds[whichSound];
+            anim.SetTrigger("Hit");
+        }
+            
 
         audioSource.pitch = pitch;
         audioSource.Play();
 
-        
-
-            
-        
-
         rb.AddForce(knockback);
+    }
+
+    void DeleteSelf()
+    {
+        Destroy(this.gameObject);
     }
 
     private void FindNextCheckpoint()
     {
         nextWalkPoint = new Vector3(checkPoints[currentCheckpoint].position.x, transform.position.y, checkPoints[currentCheckpoint].position.z);
 
-        if (Physics.Raycast(nextWalkPoint, -transform.up, 2f, ground))
+        nextWalkPointSet = true;
+    }
+
+    public void Setup(GameObject checkpoints)
+    {
+        for (int i = 0; i < checkpoints.transform.childCount; i++)
         {
-            nextWalkPointSet = true;
+            //Debug.Log(checkpoints.transform.GetChild(i).name);
+            checkPoints.Add(checkpoints.transform.GetChild(i).transform);
         }
+
+        checkPoints.Add(checkpoints.transform);
+    }
+
+
+    void Attack()
+    {
+        anim.SetTrigger("Attack");
+        attackHitbox.SetActive(true);
+        Invoke(nameof(ResetAttack), attackCooldown);
+        attacking = true;
+    }
+
+    void ResetAttack()
+    {
+        attacking = false;
+        attackHitbox.SetActive(false);
+    }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag != "Player" && other.tag != "Crystal")
+            return;
+
+        if (attacking)
+            return;
+
+        Attack();
     }
 }

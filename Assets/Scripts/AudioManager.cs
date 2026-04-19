@@ -46,6 +46,10 @@ public class AudioManager : MonoBehaviour
     private float fadeOutTimerCur = 0;
     private float fadeOutTimerStart = 0;
 
+    private float timer;
+    private float sound1Length;
+    private float sound2Length;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -70,6 +74,12 @@ public class AudioManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        timer += Time.deltaTime;
+
+        if (timer >= 15)
+        {
+            timer = 0;
+        }
 
         if (fadeInTimerCur > 0)
         {
@@ -96,12 +106,26 @@ public class AudioManager : MonoBehaviour
                 song1.volume = (fadeOutTimerCur / fadeOutTimerStart) * masterVolume * musicVolume;
             else
                 song2.volume = (fadeOutTimerCur / fadeOutTimerStart) * masterVolume * musicVolume;
-
-            Debug.Log(fadeOutTimerCur);
         }
 
+        // NEED TO ADD FOR 2 CHANNELS OF SOUND, PLAY SOUND WON'T WORK WITH 2 CHANNELS IF THERE ONLY EXISTS 1 FUNCTION (UNLESS YOU DO SOMETHING CRACKED I DUNNO)
+        /*
+        if (sfx != null)
+        {
+            if (timer >= sound1Length)
+            {
+                sfx = null;
+            }
+        }
 
-
+        if (sfx2 != null)
+        {
+            if (timer >= sound2Length)
+            {
+                sfx2 = null;
+            }
+        }
+        */
     }
 
     public void TransitionSong(string nextSong, float curSongFadeOut, float nextSongFadeIn)
@@ -109,6 +133,9 @@ public class AudioManager : MonoBehaviour
         AudioClip clip = buildSong;
         switch (nextSong)
         {
+            case "menu":
+                clip = menuSong;
+                break;
             case "build":
                 clip = buildSong;
                 break;
@@ -151,6 +178,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySound(string sound)
     {
+
         switch (sound)
         {
             case "menu_back":
@@ -182,16 +210,31 @@ public class AudioManager : MonoBehaviour
                 break;
             case "wave_end":
                 sfx2.clip = waveEnd;
-                break;
+                sfx2.Play();
+                return;
             case "wave_start":
                 sfx2.clip = waveStart;
+                sfx2.Play();
+                return;
+            default:
+                sfx.clip = null;    
                 break;
         }
 
         sfx.Play();
     }
-    
 
+    /*
+    public void PlaySfx1(string sound)
+    {
+
+    }
+
+    public void PlaySfx2(string sound)
+    {
+
+    }
+    */
 
     public float GetSFXVolume()
     {

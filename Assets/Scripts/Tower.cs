@@ -10,8 +10,8 @@ public class Tower : MonoBehaviour
 
     private float shootTimer = 5;
     public int level = 0;
-    private float towerValue = 200;
-    private int[] cost = { 75, 150, 300 };
+    private float towerValue = 400;
+    private int[] cost = { 200, 400, 600 };
     protected float timer;
 
     public LayerMask whatIsEnemy;
@@ -36,7 +36,7 @@ public class Tower : MonoBehaviour
     void Update()
     {
         enemyInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsEnemy);
-
+        
         timer -= Time.deltaTime;
 
         if (enemyInSightRange)
@@ -68,7 +68,7 @@ public class Tower : MonoBehaviour
         {
             timer = shootTimer;
 
-            Projectile tempBullet = Instantiate<GameObject>(bulletPrefab).GetComponent<Projectile>();
+            TurretBullet tempBullet = Instantiate<GameObject>(bulletPrefab).GetComponent<TurretBullet>();
 
             tempBullet.transform.position = gunBarrel.position;
             tempBullet.Shoot(gunBarrel.rotation);

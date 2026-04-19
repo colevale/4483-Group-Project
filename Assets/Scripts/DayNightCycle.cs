@@ -18,10 +18,12 @@ public class DayNightCycle : MonoBehaviour
     // Pause bool for future proofing
     public bool pause;
 
+    private float pauseTimer;
+
     private void Start()
     {
         // Sets pause to be false
-        pause = false;
+        pause = true;
         timer = 0f;
 
         // Calculates exactly how many degrees per second for one day
@@ -42,6 +44,11 @@ public class DayNightCycle : MonoBehaviour
                 // Rotates the directional light
                 rotationVector.x = degreesPerSecond * Time.deltaTime;
                 transform.Rotate(rotationVector, Space.World);
+
+                if (timer >= pauseTimer)
+                {
+                    pause = true;
+                }
             }
             else
             {
@@ -53,6 +60,11 @@ public class DayNightCycle : MonoBehaviour
 
     // FUTURE PROOFED PAUSE TIME FUNCTIONS FOR PAUSE MENU AND SUCH
 
+    public void SetPauseTime(float time)
+    {
+        pauseTimer = time;
+    }
+
     public void PauseTime()
     {
         pause = true;
@@ -61,5 +73,10 @@ public class DayNightCycle : MonoBehaviour
     public void ResumeTime()
     {
         pause = false;
+    }
+
+    public float getTimeInOneDay()
+    {
+        return timeInOneDay;
     }
 }

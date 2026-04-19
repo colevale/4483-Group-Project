@@ -6,39 +6,76 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
+    public static Spawner instance;
+
+
     public GameObject checkpoints;
-    public int numberToSpawn;
+    private int numberToSpawn;
     private int counter;
     public GameObject player;
-    public bool doneSpawning;
+
+    private bool enemiesSpawned;
+    private bool allEnemiesDefeated;
+
     List<GameObject> spawned;
 
     [SerializeField] private GameObject enemyPreFab;
     //[SerializeField] private LayerMask buildlayer;
 
     [SerializeField]
-    private float spawnInterval = 10f;
+    private float spawnInterval = 3f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        counter = 0;
+        counter = -1;
         spawned = new List<GameObject>();
-        doneSpawning = false;
-        StartCoroutine(spawnEnemy(spawnInterval, enemyPreFab));
+        enemiesSpawned = false;
+        allEnemiesDefeated = false;
     }
 
     private void FixedUpdate()
     {
         //removes all items destroyed in spawned objects
         spawned.RemoveAll(item => item == null);
-        Debug.Log(spawned.Count);
-        if (counter == numberToSpawn && spawned.Count <= 0)
+        if (counter == numberToSpawn)
         {
-            doneSpawning = true;
+            enemiesSpawned = true;
+            if (spawned.Count <= 0)
+            {
+                allEnemiesDefeated = true;
+            }
         }
     }
 
+    public void setSpawnNumber(int num)
+    {
+        numberToSpawn = num;
+    }
+
+    public bool allEnemiesSpawned()
+    {
+        return enemiesSpawned;
+    }
+
+    public bool enemiesDefeated()
+    {
+        return allEnemiesDefeated;
+    }
+
     //following https://www.youtube.com/watch?v=SELTWo1XZ0c
+
+    public void StartWave()
+    {
+        StartCoroutine(spawnEnemy(spawnInterval, enemyPreFab));
+        counter = 0;
+    }
+
+    public void ResetWave()
+    {
+        counter = -1;
+        enemiesSpawned = false;
+        allEnemiesDefeated = false;
+    }
 
     private IEnumerator spawnEnemy(float interval, GameObject enemy)
     {
@@ -48,26 +85,29 @@ public class Spawner : MonoBehaviour
 
         
             yield return new WaitForSeconds(interval);
-            GameObject newEnemy = Instantiate(enemy, transform.position, transform.rotation);
+            GameObject newEnemy = Instantiate(enemy, transform.position, transform.rotation, gameObject.transform);
             newEnemy.SetActive(false);
             
             newEnemy.layer = 8;
-            EnemyWaypoints patrolScript = newEnemy.GetComponent<EnemyWaypoints>();
             Enemy enemyScript = newEnemy.GetComponent<Enemy>();
 
             //sets player target
             enemyScript.player = player;
             enemyScript.setupPlayer();
+            enemyScript.Setup(checkpoints);
 
             //adds checkpoints
-            patrolScript.Setup(checkpoints);
             newEnemy.SetActive(true);
             spawned.Add(newEnemy);
             counter++;
             StartCoroutine(spawnEnemy(interval, enemy));
 
         }
+    }
 
-        
+
+    public void RemoveEnemy(GameObject enemy)
+    {
+        spawned.Remove(enemy);
     }
 }

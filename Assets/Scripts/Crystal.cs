@@ -8,6 +8,8 @@ public class Crystal : MonoBehaviour
     public int maxHP = 100;
     public int curHP = 100;
 
+    public Animator attackedUI;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -21,16 +23,20 @@ public class Crystal : MonoBehaviour
     }
 
 
-    private void OnCollisionEnter(Collision collision)
+    public void TakeDamage(int damage)
     {
-        if (collision.gameObject.tag == "Enemy")
-        {
-            curHP -= 10;
-            collision.gameObject.GetComponent<Rigidbody>().AddForce((transform.position - collision.transform.position).normalized * -100);
-        }
+        curHP -= damage;
 
         if (curHP <= 0)
-            print("You lost!!!1!!");
+        {
+            curHP = 0;
+            PlayerController.playcon.GameLose();
+        }
+        else
+        {
+            attackedUI.SetTrigger("Hit");
+        }
+
 
         hpbar.UpdateHP(curHP);
     }

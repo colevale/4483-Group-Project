@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class Trap : Tower
 {
-    private float trapTowerValue = 50;
+    private float trapTowerValue = 200;
     public float timeStuck;
 
     private bool enemyStuck;
@@ -30,7 +30,7 @@ public class Trap : Tower
             {
                 foreach (var collider in enemiesStuck)
                 {
-                    collider.gameObject.GetComponent<NavMeshAgent>().speed = 3.5f; // can reduce if we want "sticky" effect
+                    collider.gameObject.GetComponent<NavMeshAgent>().speed = 8f; // can reduce if we want "sticky" effect
                 }
 
                 Destroy(gameObject);
