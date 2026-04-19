@@ -18,17 +18,18 @@ public class TerritoryScript : MonoBehaviour
         if (!(currentProgression > 0 ))
         {
             //initializes it to 1 if it is a new game
-            PlayerPrefs.SetInt("progress", 1);
+            PlayerPrefs.SetInt("progress", 3);
             PlayerPrefs.SetInt("gold", 400);
             //default value matches initialization of 1
-            currentProgression = 1;
+            currentProgression = 3;
         }
 
         //simplified for current prototype
         //deactivates all buttons that player has not unlocked so far
         for (int i = 0; i < currentProgression; i++)
         {
-            if(currentProgression < 3)
+            //prevent overrun
+            if(currentProgression < 4)
             {
                 levels[i].interactable = true;
             }
@@ -41,7 +42,7 @@ public class TerritoryScript : MonoBehaviour
     {
         //prevents people from reselecting ending and allowing reset
         int currentProg = PlayerPrefs.GetInt("progress");
-        if (currentProg > 2)
+        if (currentProg > 3)
         {
             SceneManager.LoadScene("End");
         }

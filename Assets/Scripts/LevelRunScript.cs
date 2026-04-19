@@ -60,7 +60,7 @@ public class LevelRunScript : MonoBehaviour
     {
         //not the most elegant solution but this'll do
         int currentProg = PlayerPrefs.GetInt("progress");
-        if (currentProg > 2)
+        if (currentProg > 3)
         {
             SceneManager.LoadScene("MoralChoice");
         }
