@@ -1,3 +1,5 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,6 +12,8 @@ using static UnityEngine.Rendering.DebugUI.Table;
 public class LevelRunScript : MonoBehaviour
 {
     public TMP_Text title;
+    public TMP_Text tooltip;
+    public List<string> storyTooltips;
     //level progress text
     public TMP_Text runButtonText;
     public Button runButton;
@@ -36,6 +40,7 @@ public class LevelRunScript : MonoBehaviour
         currentLevel = PlayerPrefs.GetInt("c_lvl"); 
         int progress = PlayerPrefs.GetInt("progress"); 
         title.text = "Level " + currentLevel.ToString();
+        tooltip.text = storyTooltips[currentLevel-1];
 
         //change button text depending on progress
         if (progress <= currentLevel)
@@ -46,6 +51,7 @@ public class LevelRunScript : MonoBehaviour
         //after beating level e.g. progress > c_lvl
         else
         {
+            tooltip.text = "Great work knight. We were victorious!";
             runButton.interactable = false;
             runButtonText.text = "Victory";
         }
