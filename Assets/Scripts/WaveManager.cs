@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using TMPro;
@@ -62,6 +63,10 @@ public class WaveManager : MonoBehaviour
             Spawner spawnScript = spawner.GetComponent<Spawner>();
             if (spawnScript.enemiesDefeated() && spawnScript.allEnemiesSpawned())
             {
+                PlayerPrefs.SetInt("progress", level + 1);
+
+                playerController.SaveGold();
+                SceneManager.LoadScene("LevelRun");
                 eachWaveCheck[i] = true;
             }
             else
@@ -174,6 +179,19 @@ public class WaveManager : MonoBehaviour
         
     }
 
+    private IEnumerator GameEnding(int choice)
+    {
+        if (choice == 0)
+        {
+            PlayerPrefs.SetInt("ending", 0);
+        }
+        else
+        {
+             PlayerPrefs.SetInt("ending", 1);
+        }
+        yield return new WaitForSeconds(1.0f);
+    }
+    
 
 
     void OpenDoors(int whichDoors)

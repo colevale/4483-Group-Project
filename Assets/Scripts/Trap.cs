@@ -20,6 +20,8 @@ public class Trap : Tower
 
     private void Update()
     {
+        //prevents null references when enemies destroyed
+        enemiesStuck.RemoveAll(item => item == null);
         if (enemyStuck)
         {
             timer -= Time.deltaTime;

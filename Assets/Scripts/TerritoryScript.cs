@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TerritoryScript : MonoBehaviour
@@ -27,16 +28,26 @@ public class TerritoryScript : MonoBehaviour
         //deactivates all buttons that player has not unlocked so far
         for (int i = 0; i < currentProgression; i++)
         {
-            levels[i].interactable = true;
+            if(currentProgression < 3)
+            {
+                levels[i].interactable = true;
+            }
+            
         }
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        
+        //prevents people from reselecting ending and allowing reset
+        int currentProg = PlayerPrefs.GetInt("progress");
+        if (currentProg > 2)
+        {
+            SceneManager.LoadScene("End");
+        }
     }
 
+    //refreshes button
     public void ResetLevel()
     {
         for (int i = 0; i < levels.Length; i++)

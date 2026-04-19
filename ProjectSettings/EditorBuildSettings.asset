@@ -20,6 +20,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LevelRun.unity
     guid: 64bda6e7483a648449175feff69dd2ab
+  - enabled: 1
+    path: Assets/Scenes/MoralChoice.unity
+    guid: c1840df56c921c24ba758b7d263328fd
+  - enabled: 1
+    path: Assets/Scenes/End.unity
+    guid: 34fd46238ded6b04aaffcdb539f6ab7e
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
