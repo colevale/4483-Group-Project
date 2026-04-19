@@ -40,7 +40,7 @@ public class LevelRunScript : MonoBehaviour
         currentLevel = PlayerPrefs.GetInt("c_lvl"); 
         int progress = PlayerPrefs.GetInt("progress"); 
         title.text = "Level " + currentLevel.ToString();
-        tooltip.text = storyTooltips[currentLevel-1];
+        if (currentLevel < 4) tooltip.text = storyTooltips[currentLevel-1];
 
         //change button text depending on progress
         if (progress <= currentLevel)
