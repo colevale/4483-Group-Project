@@ -128,8 +128,10 @@ public class PlayerController : MonoBehaviour
                 deathAnim.SetBool("OnOff", false);
                 transform.position = spawnPoint;
                 respawenTimeCur = 0;
+                rb.linearDamping = 0;
             }
 
+            rb.linearDamping = 1000;
             respawnText1.text = "You Died!\nRespawn in: " + (int)(respawenTimeCur+1) + "s";
             respawnText2.text = "You Died!\nRespawn in: " + (int)(respawenTimeCur+1) + "s";
 
@@ -281,15 +283,17 @@ public class PlayerController : MonoBehaviour
             deathAnim.SetBool("OnOff", true);
             respawenTimeCur = respawnTime;
             playerDead = true;
+            rb.linearVelocity = Vector3.zero;
         }    
         else
         {
             AudioManager.instance.PlaySound("player_hurt");
+            rb.AddForce(knockback);
         }
 
         
         hpbar.UpdateHP(curHP);
-        rb.AddForce(knockback);
+        
 
         
     }
@@ -304,5 +308,10 @@ public class PlayerController : MonoBehaviour
     {
         crystalDeathAnim.SetBool("OnOff", true);
         crystalDead = true;
+    }
+
+    public bool IsDead()
+    {
+        return playerDead;
     }
 }

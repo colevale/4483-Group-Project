@@ -20,7 +20,6 @@ public class WaveManager : MonoBehaviour
     int level;
 
     public GameObject player;
-    PlayerController playerController;
     [SerializeField] private LayerMask enemyLayer;
 
     public DayNightCycle dayCycle;
@@ -65,7 +64,7 @@ public class WaveManager : MonoBehaviour
             {
                 PlayerPrefs.SetInt("progress", level + 1);
 
-                playerController.SaveGold();
+                PlayerController.playcon.SaveGold();
                 SceneManager.LoadScene("LevelRun");
                 eachWaveCheck[i] = true;
             }
@@ -143,12 +142,11 @@ public class WaveManager : MonoBehaviour
     {
         PlayerController.playcon.Heal();
         //proof of concept with single wave
-        playerController = player.GetComponent<PlayerController>();
         //most of the componentry will be extended
         if (currWave >= waves.Length)
         {
             PlayerPrefs.SetInt("progress", level + 1);
-            playerController.SaveGold();
+            PlayerController.playcon.SaveGold();
 
             waveClearAnim.SetTrigger("Wave Clear");
             waveText1.text = "Victory!!!\nActivate the horn to return to base!";

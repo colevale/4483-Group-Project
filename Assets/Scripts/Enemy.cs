@@ -194,6 +194,9 @@ public class Enemy : MonoBehaviour
         if (other.tag != "Player" && other.tag != "Crystal")
             return;
 
+        if (other.tag == "Player" && other.GetComponent<PlayerController>().IsDead())
+            return;
+
         if (attacking)
             return;
 
