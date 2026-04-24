@@ -309,6 +309,7 @@ public class PlayerController : MonoBehaviour
     {
         crystalDeathAnim.SetBool("OnOff", true);
         crystalDead = true;
+        Debug.Log("Game Lost");
     }
 
     public bool IsDead()

@@ -23497,9 +23497,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hpbar: {fileID: 1329259338}
-  maxHP: 100
-  curHP: 100
-  attackedUI: {fileID: 0}
+  maxHP: 50
+  curHP: 50
+  attackedUI: {fileID: 1139408079}
 --- !u!1 &1255244026
 GameObject:
   m_ObjectHideFlags: 0
@@ -35102,7 +35102,7 @@ MonoBehaviour:
   maxHP: 25
   respawnTime: 5
   deathAnim: {fileID: 2005000219}
-  crystalDeathAnim: {fileID: 1139408079}
+  crystalDeathAnim: {fileID: 1736828982}
   respawnText1: {fileID: 1275235918}
   respawnText2: {fileID: 644749705}
 --- !u!136 &2145298517
