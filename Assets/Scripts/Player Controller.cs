@@ -125,6 +125,7 @@ public class PlayerController : MonoBehaviour
             if (respawenTimeCur < 0)
             {
                 playerDead = false;
+                curHP = maxHP;
                 deathAnim.SetBool("OnOff", false);
                 transform.position = spawnPoint;
                 respawenTimeCur = 0;
