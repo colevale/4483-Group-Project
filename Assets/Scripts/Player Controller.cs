@@ -126,6 +126,7 @@ public class PlayerController : MonoBehaviour
             {
                 playerDead = false;
                 curHP = maxHP;
+                hpbar.UpdateHP(curHP);
                 deathAnim.SetBool("OnOff", false);
                 transform.position = spawnPoint;
                 respawenTimeCur = 0;

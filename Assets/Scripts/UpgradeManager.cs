@@ -51,7 +51,7 @@ public class UpgradeManager : MonoBehaviour
 
     private PlayerController player;
     private PlayerCam playerCam;
-    private int damage = 2;
+    private int damage = 1;
     private float projectileSpeed = 10;
     private float knockback = 50;
 
@@ -78,7 +78,7 @@ public class UpgradeManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.P) && !GameObject.Find("TowerInventory").GetComponent<TowerPlace>().BuildingOn())
         {
             if (isOpen)
             {
@@ -265,5 +265,10 @@ public class UpgradeManager : MonoBehaviour
     public float getCurrKnockback()
     {
         return knockback;
+    }
+
+    public bool isUpgrading()
+    {
+        return isOpen;
     }
 }

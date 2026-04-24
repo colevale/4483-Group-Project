@@ -78,16 +78,16 @@ public class CrystalActivation : MonoBehaviour
             AudioManager.instance.TransitionSong("menu", 2, 5);
             SceneManager.LoadScene("LevelRun");
         }
-            
-
-
-        AudioManager.instance.TransitionSong("defend", 5, 10);
-        AudioManager.instance.PlaySound("wave_start");
-        wave.StartWave();
-        anim.SetBool("OnOff", false);
-        crystalLight.intensity = 500;
-        inAWave = true;
-        gunReference.SetShot(true);
+        else
+        {
+            AudioManager.instance.TransitionSong("defend", 5, 10);
+            AudioManager.instance.PlaySound("wave_start");
+            wave.StartWave();
+            anim.SetBool("OnOff", false);
+            crystalLight.intensity = 500;
+            inAWave = true;
+            gunReference.SetShot(true);
+        }
     }
 
     public void EndWave()

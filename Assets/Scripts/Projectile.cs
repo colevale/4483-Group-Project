@@ -4,7 +4,7 @@ public class Projectile : MonoBehaviour
 {
     public float speed = 10;
     public float duration = 10;
-    public int damage = 2;
+    public int damage = 1;
     public float knockback = 50;
     float timer;
 

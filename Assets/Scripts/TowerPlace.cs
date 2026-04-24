@@ -51,7 +51,7 @@ public class TowerPlace : MonoBehaviour
     void Update()
     {
         //toggle building mode
-        if (Input.GetKeyDown(KeyCode.B))
+        if (Input.GetKeyDown(KeyCode.B) && !GameObject.Find("PlayerCanvas").GetComponent<UpgradeManager>().isUpgrading())
         {
             isBuilding = !isBuilding;
         }
@@ -287,5 +287,10 @@ public class TowerPlace : MonoBehaviour
         {
             towerScript.ChangeRendStatus(false);
         }
+    }
+
+    public bool BuildingOn()
+    {
+        return isBuilding;
     }
 }

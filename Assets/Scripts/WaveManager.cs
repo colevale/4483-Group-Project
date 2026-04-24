@@ -62,10 +62,6 @@ public class WaveManager : MonoBehaviour
             Spawner spawnScript = spawner.GetComponent<Spawner>();
             if (spawnScript.enemiesDefeated() && spawnScript.allEnemiesSpawned())
             {
-                PlayerPrefs.SetInt("progress", level + 1);
-
-                PlayerController.playcon.SaveGold();
-                SceneManager.LoadScene("LevelRun");
                 eachWaveCheck[i] = true;
             }
             else
