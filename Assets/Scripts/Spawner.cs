@@ -19,6 +19,9 @@ public class Spawner : MonoBehaviour
 
     List<GameObject> spawned;
 
+    private Coroutine routine;
+    private bool skipped;
+
     [SerializeField] private GameObject enemyPreFab;
     //[SerializeField] private LayerMask buildlayer;
 
@@ -35,6 +38,7 @@ public class Spawner : MonoBehaviour
         spawned = new List<GameObject>();
         enemiesSpawned = false;
         allEnemiesDefeated = false;
+        skipped = false;
     }
 
     private void FixedUpdate()
@@ -70,8 +74,9 @@ public class Spawner : MonoBehaviour
 
     public void StartWave()
     {
-        StartCoroutine(spawnEnemy(spawnInterval, enemyPreFab));
         counter = 0;
+        skipped = false;
+        routine = StartCoroutine(spawnEnemy(spawnInterval, enemyPreFab));
     }
 
     public void ResetWave()
@@ -83,7 +88,6 @@ public class Spawner : MonoBehaviour
 
     private IEnumerator spawnEnemy(float interval, GameObject enemy)
     {
-        
         if (counter < numberToSpawn || numberToSpawn < 0)
         {
 
@@ -104,8 +108,11 @@ public class Spawner : MonoBehaviour
             newEnemy.SetActive(true);
             spawned.Add(newEnemy);
             counter++;
-            StartCoroutine(spawnEnemy(interval, enemy));
 
+            if (skipped != true)
+            {
+                routine = StartCoroutine(spawnEnemy(interval, enemy));
+            }
         }
     }
 
@@ -113,5 +120,11 @@ public class Spawner : MonoBehaviour
     public void RemoveEnemy(GameObject enemy)
     {
         spawned.Remove(enemy);
+    }
+
+    public void StopSpawner()
+    {
+        StopCoroutine(routine);
+        skipped = true;
     }
 }

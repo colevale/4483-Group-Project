@@ -79,6 +79,26 @@ public class WaveManager : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.Alpha0) && !waveEnd)
+        {
+            Debug.Log("Wave Skipped!");
+
+            foreach (GameObject spawner in levelSpawners)
+            {
+                Spawner script = spawner.GetComponent<Spawner>();
+                script.StopSpawner();
+
+                Enemy[] allEnemiesSpawned = spawner.GetComponentsInChildren<Enemy>();
+
+                foreach (Enemy spawnerEnemy in allEnemiesSpawned)
+                {
+                    spawnerEnemy.TakeDamage(100, new Vector3(0, 0, 0));
+                }
+            }
+
+            fullCheck = true;
+        }
+
         if (fullCheck && !waveEnd)
         {
             waveEnd = true;
